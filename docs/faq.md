@@ -24,7 +24,7 @@ These are basic primitives of GCP [required](https://github.com/GoogleCloudPlatf
 
 ### Why are the prerequisite permissions required?
 
-These permissions are [required](https://github.com/GoogleCloudPlatform/cloud-foundation-fabric/blob/v29.0.0/fast/stages/1-resman/README.md) by the FAST foundation in order to bootstrap a greenfield GCP organization. Yuo can read more about how FAST leverages IAM authoritative policies to protect the organization and it's resources.
+These permissions are [required](https://github.com/GoogleCloudPlatform/cloud-foundation-fabric/blob/v29.0.0/fast/stages/1-resman/README.md) by the FAST foundation in order to bootstrap a greenfield GCP organization. You can read more about how FAST leverages IAM authoritative policies to protect the organization and it's resources.
 
 ### Where is a pasture's state persisted?
 
