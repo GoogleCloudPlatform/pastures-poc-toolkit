@@ -52,8 +52,8 @@ var DataCloudCmd = &cobra.Command{
 	Long: `Creates a data-cloud landing zone in a FAST foundation sandbox.
 Jumpstarts can optionally be deployed as features into the landing zone. An
 example of how to use this pasture:
-	
-	pasture plant data-cloud --jumpstart data-warehouse`,
+
+	pasture plant data-cloud --data-warehouse`,
 	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Construct path for the config
