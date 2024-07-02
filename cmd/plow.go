@@ -26,7 +26,7 @@ import (
 )
 
 const (
-	seedVer = "v0.7.1" // x-release-please-version
+	seedVer = "v0.7.2" // x-release-please-version
 )
 
 var (
