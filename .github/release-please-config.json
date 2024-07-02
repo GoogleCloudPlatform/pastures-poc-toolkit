@@ -1,0 +1,10 @@
+{
+    "release-type": "go",
+    "packages": {
+        ".": {
+            "extra-files": [
+                "README.md"
+            ]
+        }
+    }
+}

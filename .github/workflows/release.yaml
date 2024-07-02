@@ -37,7 +37,8 @@ jobs:
         id: release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          release-type: go
+          config-file: .github/release-please-config.json
+          manifest-file: .github/.release-please-manifest.json
       - name: Install dependencies
         if: ${{ steps.release.outputs.release_created }}
         run: go get .
