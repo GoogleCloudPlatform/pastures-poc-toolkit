@@ -19,7 +19,7 @@ package fabric
 import (
 	"os"
 
-	"github.com/williamsmt/pastures/internal/utils"
+	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/internal/utils"
 	"gopkg.in/yaml.v3"
 )
 

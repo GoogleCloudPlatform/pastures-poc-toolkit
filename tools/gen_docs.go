@@ -20,7 +20,7 @@ import (
 	"log"
 
 	"github.com/spf13/cobra/doc"
-	"github.com/williamsmt/pastures/cmd"
+	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/cmd"
 )
 
 func main() {

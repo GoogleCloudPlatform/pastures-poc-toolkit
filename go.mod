@@ -1,4 +1,4 @@
-module github.com/williamsmt/pastures
+module github.com/GoogleCloudPlatform/pastures-poc-toolkit
 
 go 1.22.0
 

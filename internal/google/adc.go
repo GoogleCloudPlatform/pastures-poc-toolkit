@@ -27,7 +27,7 @@ import (
 
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/lestrrat-go/jwx/jwk"
-	"github.com/williamsmt/pastures/internal/utils"
+	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/internal/utils"
 	"golang.org/x/oauth2/google"
 )
 

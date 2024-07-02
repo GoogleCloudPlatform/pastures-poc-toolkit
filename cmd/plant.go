@@ -18,7 +18,7 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/williamsmt/pastures/cmd/seeds/dataCloud"
+	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/cmd/seeds/dataCloud"
 )
 
 // plantCmd represents the plant command

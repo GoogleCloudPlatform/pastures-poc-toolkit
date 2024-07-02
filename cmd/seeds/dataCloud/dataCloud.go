@@ -21,11 +21,11 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/internal/fabric"
+	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/internal/google"
+	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/internal/terraform"
+	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/internal/utils"
 	"github.com/spf13/cobra"
-	"github.com/williamsmt/pastures/internal/fabric"
-	"github.com/williamsmt/pastures/internal/google"
-	"github.com/williamsmt/pastures/internal/terraform"
-	"github.com/williamsmt/pastures/internal/utils"
 )
 
 var (

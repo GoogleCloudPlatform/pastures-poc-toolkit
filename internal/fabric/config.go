@@ -21,8 +21,8 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/williamsmt/pastures/internal/google"
-	"github.com/williamsmt/pastures/internal/utils"
+	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/internal/google"
+	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/internal/utils"
 )
 
 func NewFastConfig() *FastConfig {

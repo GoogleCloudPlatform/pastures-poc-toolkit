@@ -20,8 +20,8 @@ import (
 	"path/filepath"
 	"sync"
 
-	"github.com/williamsmt/pastures/internal/terraform"
-	"github.com/williamsmt/pastures/internal/utils"
+	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/internal/terraform"
+	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/internal/utils"
 )
 
 const ( // TODO: move all to common file for library
