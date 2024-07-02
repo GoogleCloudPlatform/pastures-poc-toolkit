@@ -46,10 +46,10 @@ jobs:
         if : ${{ steps.release.outputs.release_created }}
         run: |
           GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -tags netgo -ldflags '-extldflags "-static"' -o ./pasture main.go
-          tar -zcvf ./pasture_${{ steps.release.outputs.tag_name }}.tar.gz ./pasture
+          tar -zcvf ./pastures_amd64.tar.gz ./pasture
       - name: Upload Release Artifacts
         if: ${{ steps.release.outputs.release_created }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ steps.release.outputs.tag_name }} ./pasture_${{ steps.release.outputs.tag_name }}.tar.gz
+        run: gh release upload ${{ steps.release.outputs.tag_name }} ./pastures_amd64.tar.gz
       
