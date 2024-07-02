@@ -16,7 +16,7 @@ limitations under the License.
 
 package main
 
-import "github.com/williamsmt/pastures/cmd"
+import "github.com/GoogleCloudPlatform/pastures-poc-toolkit/cmd"
 
 func main() {
 	cmd.Execute()

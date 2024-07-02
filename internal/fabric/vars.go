@@ -19,7 +19,7 @@ package fabric
 import (
 	"path/filepath"
 
-	"github.com/williamsmt/pastures/internal/google"
+	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/internal/google"
 )
 
 const (

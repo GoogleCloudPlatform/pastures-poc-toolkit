@@ -20,9 +20,9 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"github.com/williamsmt/pastures/internal/fabric"
-	"github.com/williamsmt/pastures/internal/google"
-	"github.com/williamsmt/pastures/internal/utils"
+	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/internal/fabric"
+	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/internal/google"
+	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/internal/utils"
 )
 
 var (
