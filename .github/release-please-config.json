@@ -3,7 +3,8 @@
     "packages": {
         ".": {
             "extra-files": [
-                "README.md"
+                "README.md",
+                "cmd/plow.go"
             ]
         }
     }
