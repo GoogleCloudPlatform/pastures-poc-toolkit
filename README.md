@@ -49,24 +49,15 @@ We recommend running `pasture` from a Cloud Shell environment. If you choose to 
 
 ## Install
 
-1. Set your OS and Pasture version variables:
-
+Install the binary to your `$PATH` of choice. `amd64` is currently the only supported build architecture.
+<!-- x-release-please-start-version -->
 ```shell
-export PASTURE_OS=darwin # 'amd64' or 'darwin'
-export PASTURE_VERSION=v0.7.0
-```
-
-2. Install the binary to your `$PATH` of choice:
-
-```shell
-sudo wget https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/releases/download/${PASTURE_VERSION}/pasture_${PASTURE_VERSION}_${PASTURE_OS}.tar.gz -O - \
+sudo wget https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/releases/download/0.7.0/pasture_0.7.0_amd64.tar.gz -O - \
 | sudo tar -zxf - -C /usr/local/bin
-
-
 
 sudo chmod +x /usr/local/bin/pasture
 ```
-
+<!-- x-release-please-end -->
 ## Quickstart
 
 **Note: We recommend running this quickstart from a Cloud Shell environment**
