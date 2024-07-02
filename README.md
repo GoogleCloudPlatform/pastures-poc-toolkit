@@ -53,7 +53,7 @@ We recommend running `pasture` from a Cloud Shell environment. If you choose to 
 
 ```shell
 export PASTURE_OS=darwin # 'amd64' or 'darwin'
-export PASTURE_VERSION=v0.7.0 # {x-release-please-version}
+export PASTURE_VERSION=v0.7.1 # {x-release-please-version}
 ```
 
 2. Install the binary to your `$PATH` of choice:
