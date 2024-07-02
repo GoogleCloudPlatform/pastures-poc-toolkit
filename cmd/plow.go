@@ -19,10 +19,14 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/spf13/cobra"
 	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/internal/fabric"
 	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/internal/google"
 	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/internal/utils"
+	"github.com/spf13/cobra"
+)
+
+const (
+	seedVer = "v0.7.1" // x-release-please-version
 )
 
 var (
@@ -193,6 +197,9 @@ var plowCmd = &cobra.Command{
 					fmt.Printf("Using %s tag for Fabric FAST \n", fabricVer)
 					s.Repository.SetRef("refs/tags/" + fabricVer)
 				}
+			} else if s.Type == "seed" {
+				fmt.Printf("Using %s tag for the Pasture seed %s \n", seedVer, s.Name)
+				s.Repository.SetRef("refs/tags/" + seedVer)
 			}
 
 			fmt.Println("Cloning repository for", s.Type)
