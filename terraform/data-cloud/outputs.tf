@@ -15,23 +15,23 @@
  */
 
 locals {
-    _tpl_providers = "${path.module}/templates/providers.tf.tpl"
-    providers = {
-        "data-cloud" = templatefile(local._tpl_providers, {
-            name   = "data-cloud"
-            bucket = var.state_bucket
-        })
-    }
+  _tpl_providers = "${path.module}/templates/providers.tf.tpl"
+  providers = {
+    "data-cloud" = templatefile(local._tpl_providers, {
+      name   = "data-cloud"
+      bucket = var.state_bucket
+    })
+  }
 }
 
 resource "google_storage_bucket_object" "providers" {
   for_each = local.providers
   bucket   = var.state_bucket
-  name    = "${var.state_dir}/${each.key}-providers.tf"
-  content = each.value
+  name     = "${var.state_dir}/${each.key}-providers.tf"
+  content  = each.value
 }
 
 output "project_id" {
   description = "Details of pcreated projects"
-  value = module.projects.projects["data"].id
+  value       = module.data-platform.projects.project_id.landing
 }

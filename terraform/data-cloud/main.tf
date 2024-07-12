@@ -35,7 +35,7 @@ resource "random_string" "random" {
 
 resource "google_folder" "data_cloud" {
   display_name = "pasture-data-cloud"
-  parent = data.google_active_folder.sandbox.name
+  parent       = data.google_active_folder.sandbox.name
 }
 
 # module "projects" {
@@ -70,7 +70,7 @@ resource "google_folder" "data_cloud" {
 # }
 
 resource "google_bigquery_reservation" "reservation" {
-  project = module.projects.projects["data"].id
+  project = module.data-platform.projects.project_id.processing
 
   name              = "pastures-data-cloud"
   location          = var.locations.bq
@@ -84,18 +84,18 @@ resource "google_bigquery_reservation" "reservation" {
 }
 
 resource "google_bigquery_reservation_assignment" "assignment" {
-  project = module.projects.projects["data"].id
+  project = module.data-platform.projects.project_id.processing
 
-  assignee = "projects/${module.projects.projects["data"].id}"
-  job_type = "QUERY"
+  assignee    = "projects/${module.data-platform.projects.project_id.processing}"
+  job_type    = "QUERY"
   reservation = google_bigquery_reservation.reservation.id
 }
 
 resource "google_bigquery_bi_reservation" "bi_reservation" {
-  project = module.projects.projects["data"].id
+  project = module.data-platform.projects.project_id.curated
 
   location = var.locations.bq
-  size = local.dimensions[var.pasture_size].ram * pow(1024, 3)
+  size     = local.dimensions[var.pasture_size].ram * pow(1024, 3)
 }
 
 module "data-platform" {
@@ -105,7 +105,7 @@ module "data-platform" {
     billing_account_id = var.billing_account.id
     parent             = google_folder.data_cloud.folder_id
   }
-  prefix = var.prefix
+  prefix         = var.prefix
   project_suffix = "-${random_string.random.result}"
 
   groups = {
