@@ -33,36 +33,41 @@ resource "random_string" "random" {
   upper   = false
 }
 
-module "projects" {
-  source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric//blueprints/factories/project-factory?ref=v29.0.0"
-
-  data_defaults = {
-    billing_account = var.billing_account.id
-    parent          = data.google_active_folder.sandbox.name
-  }
-
-  data_merges = {
-    labels = {
-        source = "pastures"
-    }
-    services = [
-      "logging.googleapis.com",
-      "monitoring.googleapis.com",
-      "stackdriver.googleapis.com",
-      "iam.googleapis.com",
-      "serviceusage.googleapis.com",
-      "servicemanagement.googleapis.com",
-      "cloudapis.googleapis.com",
-      "cloudresourcemanager.googleapis.com"
-    ]
-  }
-
-  data_overrides = {
-    prefix = "pasture-${var.prefix}-${random_string.random.result}"
-  }
-
-  factory_data_path = "data/projects"
+resource "google_folder" "data_cloud" {
+  display_name = "pasture-data-cloud"
+  parent = data.google_active_folder.sandbox.name
 }
+
+# module "projects" {
+#   source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric//blueprints/factories/project-factory?ref=v29.0.0"
+
+#   data_defaults = {
+#     billing_account = var.billing_account.id
+#     parent          = data.google_active_folder.sandbox.name
+#   }
+
+#   data_merges = {
+#     labels = {
+#         source = "pastures"
+#     }
+#     services = [
+#       "logging.googleapis.com",
+#       "monitoring.googleapis.com",
+#       "stackdriver.googleapis.com",
+#       "iam.googleapis.com",
+#       "serviceusage.googleapis.com",
+#       "servicemanagement.googleapis.com",
+#       "cloudapis.googleapis.com",
+#       "cloudresourcemanager.googleapis.com"
+#     ]
+#   }
+
+#   data_overrides = {
+#     prefix = "pasture-${var.prefix}-${random_string.random.result}"
+#   }
+
+#   factory_data_path = "data/projects"
+# }
 
 resource "google_bigquery_reservation" "reservation" {
   project = module.projects.projects["data"].id
@@ -91,4 +96,24 @@ resource "google_bigquery_bi_reservation" "bi_reservation" {
 
   location = var.locations.bq
   size = local.dimensions[var.pasture_size].ram * pow(1024, 3)
+}
+
+module "data-platform" {
+  source              = "github.com/GoogleCloudPlatform/cloud-foundation-fabric//blueprints/data-solutions/data-platform-minimal?ref=v29.0.0"
+  organization_domain = var.organization.domain
+  project_config = {
+    billing_account_id = var.billing_account.id
+    parent             = google_folder.data_cloud.folder_id
+  }
+  prefix = var.prefix
+  project_suffix = "-${random_string.random.result}"
+
+  groups = {
+    data-analysts  = var.groups.gcp-devops
+    data-engineers = var.groups.gcp-devops
+    data-security  = var.groups.gcp-security-admins
+  }
+
+  location = var.locations.bq
+  region   = var.region
 }
