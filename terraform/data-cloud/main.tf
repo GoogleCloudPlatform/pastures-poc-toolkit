@@ -38,36 +38,36 @@ resource "google_folder" "data_cloud" {
   parent       = data.google_active_folder.sandbox.name
 }
 
-# module "projects" {
-#   source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric//blueprints/factories/project-factory?ref=v29.0.0"
+module "projects" {
+  source = "github.com/GoogleCloudPlatform/cloud-foundation-fabric//blueprints/factories/project-factory?ref=v29.0.0"
 
-#   data_defaults = {
-#     billing_account = var.billing_account.id
-#     parent          = data.google_active_folder.sandbox.name
-#   }
+  data_defaults = {
+    billing_account = var.billing_account.id
+    parent          = data.google_active_folder.sandbox.name
+  }
 
-#   data_merges = {
-#     labels = {
-#         source = "pastures"
-#     }
-#     services = [
-#       "logging.googleapis.com",
-#       "monitoring.googleapis.com",
-#       "stackdriver.googleapis.com",
-#       "iam.googleapis.com",
-#       "serviceusage.googleapis.com",
-#       "servicemanagement.googleapis.com",
-#       "cloudapis.googleapis.com",
-#       "cloudresourcemanager.googleapis.com"
-#     ]
-#   }
+  data_merges = {
+    labels = {
+        source = "pastures"
+    }
+    services = [
+      "logging.googleapis.com",
+      "monitoring.googleapis.com",
+      "stackdriver.googleapis.com",
+      "iam.googleapis.com",
+      "serviceusage.googleapis.com",
+      "servicemanagement.googleapis.com",
+      "cloudapis.googleapis.com",
+      "cloudresourcemanager.googleapis.com"
+    ]
+  }
 
-#   data_overrides = {
-#     prefix = "pasture-${var.prefix}-${random_string.random.result}"
-#   }
+  data_overrides = {
+    prefix = "pasture-${var.prefix}-${random_string.random.result}"
+  }
 
-#   factory_data_path = "data/projects"
-# }
+  factory_data_path = "data/projects"
+}
 
 resource "google_bigquery_reservation" "reservation" {
   project = module.data-platform.projects.project_id.processing
@@ -109,9 +109,9 @@ module "data-platform" {
   project_suffix = "-${random_string.random.result}"
 
   groups = {
-    data-analysts  = var.groups.gcp-devops
-    data-engineers = var.groups.gcp-devops
-    data-security  = var.groups.gcp-security-admins
+    data-analysts  = google_cloud_identity_group.data_analysts.display_name
+    data-engineers = google_cloud_identity_group.data_engineers.display_name
+    data-security  = google_cloud_identity_group.data_security.display_name
   }
 
   location = var.locations.bq
