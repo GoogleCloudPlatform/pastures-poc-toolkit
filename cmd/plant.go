@@ -17,8 +17,8 @@ limitations under the License.
 package cmd
 
 import (
-	"github.com/spf13/cobra"
 	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/cmd/seeds/dataCloud"
+	"github.com/spf13/cobra"
 )
 
 // plantCmd represents the plant command
@@ -28,7 +28,7 @@ var plantCmd = &cobra.Command{
 	Long: `Plant creates a POC environment in a FAST foundation sandbox using
 a seed template (e.g. data-cloud). Example:
 	
-	pasture plant data-cloud --jumpstart data-warehouse
+	pasture plant data-cloud --region us-central1 --pasture-size small
 	
 A list of seed templates is shown by running:
 	

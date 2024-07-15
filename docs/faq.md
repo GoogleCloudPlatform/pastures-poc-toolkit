@@ -30,10 +30,10 @@ These permissions are [required](https://github.com/GoogleCloudPlatform/cloud-fo
 
 Each of the FAST stages' remote state are stored in discrete GCS buckets. The Seed state and Pasture vars files are stored in the common FAST `outputs` GCS bucket. This persistence approach provides portability for Pastures, although we highly recommend running in a Cloud Shell environment.
 
-### What are Google Cloud Jumpstarts?
+### What are Fabric Blueprints?
 
-Jumpstarts are preconditioned resource collections by the Cloud Architecture Center. Take a look at this [Google blog post](https://cloud.google.com/blog/products/application-modernization/introducing-google-cloud-jump-start-solutions) covering the essence of Jumpstarts
+Blueprints are preconditioned resource collections maintained in the Cloud Foundation Fabric [repository](https://github.com/GoogleCloudPlatform/cloud-foundation-fabric/tree/master/blueprints). Take a look at the documentation which covers the essence of Blueprints.
 
 ### What all is deleted when I "burn" a pasture?
 
-`pasture burn` will delete a seed template project, any optional Jumpstarts deployed, and any manual resources created inside the seed project. Currently, a destroy sequence _will not_ delete a FAST foundation. This is to accommodate future experimentation in a safe-by-default environment, since a foundation is always recommended for enterprise workloads on GCP.
+`pasture burn` will delete a seed template project, any seed Blueprints deployed, and any manual resources created inside the seed project. Currently, a destroy sequence _will not_ delete a FAST foundation. This is to accommodate future experimentation in a safe-by-default environment, since a foundation is always recommended for enterprise workloads on GCP.

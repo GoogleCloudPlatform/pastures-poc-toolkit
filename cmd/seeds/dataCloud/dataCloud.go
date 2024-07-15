@@ -43,12 +43,12 @@ var (
 // DataCloudCmd represents the dataCloud command
 var DataCloudCmd = &cobra.Command{
 	Use:   "data-cloud",
-	Short: "Deploy a Data Cloud pasture with optional jumpstarts",
+	Short: "Deploy a Data Cloud pasture with blueprints",
 	Long: `Creates a data-cloud landing zone in a FAST foundation sandbox.
-Jumpstarts can optionally be deployed as features into the landing zone. An
+Blueprints are deployed as features into the landing zone. An
 example of how to use this pasture:
 	
-	pasture plant data-cloud --jumpstart data-warehouse`,
+	pasture plant data-cloud --region us-central1 --pasture-size small`,
 	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Construct path for the config

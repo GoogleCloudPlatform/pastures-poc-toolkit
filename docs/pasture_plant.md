@@ -7,7 +7,7 @@ Creates a POC environment from a template
 Plant creates a POC environment in a FAST foundation sandbox using
 a seed template (e.g. data-cloud). Example:
 	
-	pasture plant data-cloud --jumpstart data-warehouse
+	pasture plant data-cloud --region us-central1 --pasture-size small
 	
 A list of seed templates is shown by running:
 	

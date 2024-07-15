@@ -72,12 +72,12 @@ sudo chmod +x /usr/local/bin/pasture
 pasture plow --prefix example1 --group-owner pasture-group --domain example.com --billing-account ABCDEF-GHIJKL-MNOPQ
 ```
 
-2. Create a pasture by indicating which seed template and optional jumpstarts you'd like to deploy:
+2. Create a pasture by indicating which seed template you'd like to deploy:
 
-**Note: This could take up to 10 minutes to deploy**
+**Note: This could take up to 15 minutes to deploy**
 
 ```shell
-pasture plant data-cloud --region us-central1 --pasture-size small --data-warehouse
+pasture plant data-cloud --region us-central1 --pasture-size small
 ```
 
 ## Cleanup
@@ -85,7 +85,7 @@ pasture plant data-cloud --region us-central1 --pasture-size small --data-wareho
 Destruction of a planted pasture is scoped to the seed template. All resources deployed by `pasture` or out of band will be deleted. Currently, `pasture burn` requires the same paramters inputs that were used with the corresponding `pasture plant`:
 
 ```shell
-pasture burn data-cloud --region us-central1 --pasture-size small --data-warehouse
+pasture burn data-cloud --region us-central1 --pasture-size small
 ```
 
 ## State
@@ -104,14 +104,11 @@ Afterwards, you can continue running `pasture` as your normally would.
 | ---- | ----------- | ---- | --------------------- |
 | `data-cloud` | Landing zone for data, analytics and generative AI | [cmd](docs/pasture_plant_data-cloud.md) | [Small](https://cloud.google.com/products/calculator?hl=en&dl=CiQ0Yzc1N2RjNC0yN2QyLTQyMmEtODlkZS0xYzkxNzAyM2JmNTgQCxokMzIxQTgxMTctN0Q3NC00QUU4LUE4NzAtNTJFNDIxMUMyNEYx)<br>[Big](https://cloud.google.com/products/calculator?hl=en&dl=CiRhYzk2Y2MzZS05ZWRkLTRmMDAtYWM5OS1lYmVmN2UyYjY0NTEQCxokRDkwRDA3OTEtNDE2Qi00ODNFLUJFRjctMjU3RTEwNkRCQzE5) |
 
-## Jumpstarts
+## Blueprints
 
 | Name | Seed | Docs |
 | ---- | ---- | ---- |
-| Data Warehouse | [`data-cloud`](docs/pasture_plant_data-cloud.md) | [Docs](https://cloud.google.com/architecture/big-data-analytics/data-warehouse) |
-| Analytics Lakehouse | [`data-cloud`](docs/pasture_plant_data-cloud.md) | [Docs](https://cloud.google.com/architecture/big-data-analytics/analytics-lakehouse) |
-| Knowledge Base | [`data-cloud`](docs/pasture_plant_data-cloud.md) | [Docs](https://cloud.google.com/architecture/ai-ml/generative-ai-knowledge-base) |
-| GenAI RAG | [`data-cloud`](docs/pasture_plant_data-cloud.md) | [Docs](https://cloud.google.com/architecture/ai-ml/generative-ai-rag) |
+| Data Platform | [`data-cloud`](docs/pasture_plant_data-cloud.md) | [Docs](https://github.com/GoogleCloudPlatform/cloud-foundation-fabric/tree/master/blueprints/data-solutions/data-platform-foundations) |
 
 ## Learn More
 
@@ -119,4 +116,4 @@ Afterwards, you can continue running `pasture` as your normally would.
 - [Configure Pasture](docs/pasture_plow.md)
 - [Create a PoC](docs/pasture_plant.md)
 - [Delete a PoC](docs/pasture_burn.md)
-- [What is FAST Foundation?](https://github.com/GoogleCloudPlatform/cloud-foundation-fabric/blob/v29.0.0/fast/README.md)
+- [What is FAST Foundation?](https://github.com/GoogleCloudPlatform/cloud-foundation-fabric/blob/master/fast/README.md)
