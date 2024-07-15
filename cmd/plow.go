@@ -198,7 +198,7 @@ var plowCmd = &cobra.Command{
 					s.Repository.SetRef("refs/tags/" + fabricVer)
 				}
 			} else if s.Type == "seed" {
-				fmt.Printf("Using %s tag for the Pasture seed %s \n", seedVer, s.Name)
+				fmt.Printf("Using %s tag for the Pasture seed %s \n", seedVer, s.Name) // TODO: we don't have a seed name here; just a shell
 				s.Repository.SetRef("refs/tags/" + seedVer)
 			}
 
@@ -226,13 +226,13 @@ var plowCmd = &cobra.Command{
 			}
 
 			// download providers file if rehydrating
-			if rehydrate {
-				fmt.Println("Sourcing provider file from GCS bucket for stage:", s.Name)
-				if err := s.ProviderFile.DownloadFile(); err != nil {
-					fmt.Println("Unable to source provider file for stage:", s.Name)
-					cobra.CheckErr(err)
-				}
-			}
+			// if rehydrate {
+			// 	fmt.Println("Sourcing provider file from GCS bucket for stage:", s.Name)
+			// 	if err := s.ProviderFile.DownloadFile(); err != nil {
+			// 		fmt.Println("Unable to source provider file for stage:", s.Name)
+			// 		cobra.CheckErr(err)
+			// 	}
+			// }
 
 			// initialize tf directory
 			// fmt.Println("Initializing FAST stage:", s.Name)
