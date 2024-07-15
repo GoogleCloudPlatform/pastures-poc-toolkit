@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.0](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/compare/v0.7.2...v1.0.0) (2024-07-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* data-cloud updated data platform blueprint ([#16](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/issues/16))
+
+### Features
+
+* data-cloud updated data platform blueprint ([#16](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/issues/16)) ([190671e](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/commit/190671ed48f9445374aa9ea1cccc923238de4a04))
+
 ## [0.7.2](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/compare/v0.7.1...v0.7.2) (2024-07-02)
 
 
