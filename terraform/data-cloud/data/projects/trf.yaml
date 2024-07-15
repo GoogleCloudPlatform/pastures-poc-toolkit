@@ -12,9 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-services:
-  - bigquery.googleapis.com
-  - bigqueryreservation.googleapis.com
-  - bigquerystorage.googleapis.com
 labels:
-  seed: data-cloud
+  boundary: transformation

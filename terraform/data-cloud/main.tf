@@ -34,7 +34,7 @@ resource "random_string" "random" {
 }
 
 resource "google_folder" "data_cloud" {
-  display_name = "pasture-data-cloud"
+  display_name = "Pasture Data Cloud"
   parent       = data.google_active_folder.sandbox.name
 }
 
@@ -43,12 +43,14 @@ module "projects" {
 
   data_defaults = {
     billing_account = var.billing_account.id
-    parent          = data.google_active_folder.sandbox.name
+    parent          = google_folder.data_cloud.id
   }
 
   data_merges = {
     labels = {
-        source = "pastures"
+        source    = "pastures"
+        seed      = "data-cloud"
+        blueprint = "data-foundation"
     }
     services = [
       "logging.googleapis.com",
@@ -58,7 +60,8 @@ module "projects" {
       "serviceusage.googleapis.com",
       "servicemanagement.googleapis.com",
       "cloudapis.googleapis.com",
-      "cloudresourcemanager.googleapis.com"
+      "cloudresourcemanager.googleapis.com",
+      "cloudidentity.googleapis.com"
     ]
   }
 
@@ -70,7 +73,7 @@ module "projects" {
 }
 
 resource "google_bigquery_reservation" "reservation" {
-  project = module.data-platform.projects.project_id.processing
+  project = module.projects.projects["cmn"].id
 
   name              = "pastures-data-cloud"
   location          = var.locations.bq
@@ -84,29 +87,39 @@ resource "google_bigquery_reservation" "reservation" {
 }
 
 resource "google_bigquery_reservation_assignment" "assignment" {
-  project = module.data-platform.projects.project_id.processing
+  project = module.projects.projects["cmn"].id
 
-  assignee    = "projects/${module.data-platform.projects.project_id.processing}"
+  assignee    = google_folder.data_cloud.id
   job_type    = "QUERY"
   reservation = google_bigquery_reservation.reservation.id
 }
 
 resource "google_bigquery_bi_reservation" "bi_reservation" {
-  project = module.data-platform.projects.project_id.curated
+  project = module.projects.projects["exp"].id
 
   location = var.locations.bq
   size     = local.dimensions[var.pasture_size].ram * pow(1024, 3)
 }
 
 module "data-platform" {
-  source              = "github.com/GoogleCloudPlatform/cloud-foundation-fabric//blueprints/data-solutions/data-platform-minimal?ref=v29.0.0"
+  source              = "github.com/GoogleCloudPlatform/cloud-foundation-fabric//blueprints/data-solutions/data-platform-foundations?ref=v29.0.0"
   organization_domain = var.organization.domain
   project_config = {
-    billing_account_id = var.billing_account.id
-    parent             = google_folder.data_cloud.folder_id
+    parent         = google_folder.data_cloud.id
+    project_create = false
+    project_ids    = {
+      drop     = module.projects.projects["drp"].id
+      load     = module.projects.projects["lod"].id
+      orc      = module.projects.projects["orc"].id
+      trf      = module.projects.projects["trf"].id
+      dwh-lnd  = module.projects.projects["lnd"].id
+      dwh-cur  = module.projects.projects["cur"].id
+      dwh-conf = module.projects.projects["cnf"].id
+      common   = module.projects.projects["cmn"].id
+      exp      = module.projects.projects["exp"].id
+    }
   }
   prefix         = var.prefix
-  project_suffix = "-${random_string.random.result}"
 
   groups = {
     data-analysts  = google_cloud_identity_group.data_analysts.display_name
@@ -114,6 +127,6 @@ module "data-platform" {
     data-security  = google_cloud_identity_group.data_security.display_name
   }
 
-  location = var.locations.bq
+  location = lower(var.locations.bq)
   region   = var.region
 }

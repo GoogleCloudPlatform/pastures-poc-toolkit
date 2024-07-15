@@ -17,8 +17,8 @@
 provider "google" {
   alias = "google-group"
 
-  billing_project       = module.projects.projects["data"].id
-  user_project_override = module.projects.projects["data"].id
+  billing_project       = module.projects.projects["cmn"].id
+  user_project_override = true
 }
 
 resource "google_cloud_identity_group" "data_analysts" {
