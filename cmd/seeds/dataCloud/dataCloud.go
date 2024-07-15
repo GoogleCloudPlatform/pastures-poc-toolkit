@@ -252,7 +252,7 @@ func init() {
 	}
 
 	// At least one jumpstart must be supplied
-	DataCloudPlant.MarkFlagsOneRequired("knowledge-base", "data-warehouse", "analytics-lakehouse", "genai-rag")
+	// DataCloudPlant.MarkFlagsOneRequired("knowledge-base", "data-warehouse", "analytics-lakehouse", "genai-rag")
 
-	DataCloudBurn.MarkFlagsOneRequired("knowledge-base", "data-warehouse", "analytics-lakehouse", "genai-rag")
+	// DataCloudBurn.MarkFlagsOneRequired("knowledge-base", "data-warehouse", "analytics-lakehouse", "genai-rag")
 }
