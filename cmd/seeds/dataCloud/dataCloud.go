@@ -18,7 +18,6 @@ package dataCloud
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/internal/fabric"
@@ -33,10 +32,6 @@ var (
 	skipFast bool
 	region   string
 	size     string
-	genai    bool
-	dw       bool
-	al       bool
-	rag      bool
 )
 
 // Set up pointers to support multiple distinct parents
@@ -137,10 +132,6 @@ example of how to use this pasture:
 				seedVars = append(seedVars, terraform.AddVar("state_bucket", s.ProviderFile.Bucket))
 				seedVars = append(seedVars, terraform.AddVar("state_dir", strings.Split(s.ProviderFile.RemotePath, "/")[0]))
 				seedVars = append(seedVars, terraform.AddVar("pasture_size", size))
-				seedVars = append(seedVars, terraform.AddVar("enable_summarization", strconv.FormatBool(genai)))
-				seedVars = append(seedVars, terraform.AddVar("enable_warehouse", strconv.FormatBool(dw)))
-				seedVars = append(seedVars, terraform.AddVar("enable_analytics", strconv.FormatBool(al)))
-				seedVars = append(seedVars, terraform.AddVar("enable_rag", strconv.FormatBool(rag)))
 			}
 
 			// do what we came here to do
@@ -229,18 +220,10 @@ func init() {
 	// Define and add flags for the seed
 	DataCloudPlant.Flags().StringVarP(&region, "region", "r", "us-central1", "Region for GCP resources to be deployed")
 	DataCloudPlant.Flags().StringVarP(&size, "pasture-size", "s", "", "Size of pasture environment - must be 'big' or 'small'")
-	DataCloudPlant.Flags().BoolVar(&genai, "knowledge-base", false, "Enable the Vertex AI knowledge base jumpstart")
-	DataCloudPlant.Flags().BoolVar(&dw, "data-warehouse", false, "Enable the BigQuery data warehouse jumpstart")
-	DataCloudPlant.Flags().BoolVar(&al, "analytics-lakehouse", false, "Enable the Analytics lakehouse jumpstart")
-	DataCloudPlant.Flags().BoolVar(&rag, "genai-rag", false, "Enable the Vertex AI RAG jumpstart")
 
 	// TODO: is there a better way to do this in Cobra?
 	DataCloudBurn.Flags().StringVarP(&region, "region", "r", "us-central1", "Region for GCP resources to be deployed")
 	DataCloudBurn.Flags().StringVarP(&size, "pasture-size", "s", "", "Size of pasture environment - must be 'big' or 'small'")
-	DataCloudBurn.Flags().BoolVar(&genai, "knowledge-base", false, "Enable the Vertex AI knowledge base jumpstart")
-	DataCloudBurn.Flags().BoolVar(&dw, "data-warehouse", false, "Enable the BigQuery data warehouse jumpstart")
-	DataCloudBurn.Flags().BoolVar(&al, "analytics-lakehouse", false, "Enable the Analytics lakehouse jumpstart")
-	DataCloudBurn.Flags().BoolVar(&rag, "genai-rag", false, "Enable the Vertex AI RAG jumpstart")
 
 	// Required flags
 	if err := DataCloudPlant.MarkFlagRequired("pasture-size"); err != nil {
@@ -250,9 +233,4 @@ func init() {
 	if err := DataCloudBurn.MarkFlagRequired("pasture-size"); err != nil {
 		cobra.CheckErr(err)
 	}
-
-	// At least one jumpstart must be supplied
-	DataCloudPlant.MarkFlagsOneRequired("knowledge-base", "data-warehouse", "analytics-lakehouse", "genai-rag")
-
-	DataCloudBurn.MarkFlagsOneRequired("knowledge-base", "data-warehouse", "analytics-lakehouse", "genai-rag")
 }
