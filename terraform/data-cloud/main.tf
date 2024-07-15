@@ -129,4 +129,8 @@ module "data-platform" {
 
   location = lower(var.locations.bq)
   region   = var.region
+
+  composer_config = {
+    disable_deployment = true
+  }
 }
