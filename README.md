@@ -64,15 +64,18 @@ sudo chmod +x /usr/local/bin/pasture
 
 1. Configure your local Pastures environment by:
     - Defining a prefix for resource naming
-    - Specifying which Cloud Identity group will own the PoC
+    - Specifying which Cloud Identity group e.g. `pasture-group` will own the PoC
     - Specifying your GCP Organization domain
     - Specifying your GCP Billing Account
+
+> [!IMPORTANT]
+> Ensure that the user running the CLI is a member of your Cloud Identity group e.g. `pasture-group`.
 
 ```shell
 pasture plow --prefix example1 --group-owner pasture-group --domain example.com --billing-account ABCDEF-GHIJKL-MNOPQ
 ```
 
-2. Create a pasture by indicating which seed template you'd like to deploy:
+1. Create a pasture by indicating which seed template you'd like to deploy:
 
 **Note: This could take up to 15 minutes to deploy**
 
