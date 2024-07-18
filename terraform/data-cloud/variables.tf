@@ -54,19 +54,19 @@ variable "locations" {
   default  = {}
 }
 
-# variable "groups" {
-#   # https://cloud.google.com/docs/enterprise/setup-checklist
-#   description = "Group names or emails to grant organization-level permissions. If just the name is provided, the default organization domain is assumed."
-#   type = object({
-#     gcp-billing-admins      = string
-#     gcp-devops              = string
-#     gcp-network-admins      = string
-#     gcp-organization-admins = string
-#     gcp-security-admins     = string
-#     gcp-support             = string
-#   })
-#   nullable = false
-# }
+variable "groups" {
+  # https://cloud.google.com/docs/enterprise/setup-checklist
+  description = "Group names or emails to grant organization-level permissions. If just the name is provided, the default organization domain is assumed."
+  type = object({
+    gcp-billing-admins      = string
+    gcp-devops              = string
+    gcp-network-admins      = string
+    gcp-organization-admins = string
+    gcp-security-admins     = string
+    gcp-support             = string
+  })
+  nullable = false
+}
 
 variable "region" {
   description = "GCP region for regional resources to be hosted"
