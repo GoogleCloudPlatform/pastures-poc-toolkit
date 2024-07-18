@@ -91,6 +91,20 @@ Destruction of a planted pasture is scoped to the seed template. All resources d
 pasture burn data-cloud --region us-central1 --pasture-size small
 ```
 
+## Known Issues
+
+```
+Error: Error when reading or editing Storage Bucket "myproject-prod-resman-net-0": Get "https://storage.googleapis.com/storage/v1/b/dkl0011-prod-resman-net-0?alt=json&prettyPrint=false": dial tcp [2607:f8b0:400c:c08::cf]:443: connect: cannot assign requested address
+```
+
+This particular error happens on Cloud Shell. Simply re-run your pastures command.
+
+```
+dial tcp [2607:f8b0:400c:c08::cf]:443: connect: cannot assign requested address
+```
+
+
+
 ## State
 
 Pastures will make every effort to persist environmental state and variable values to a GCS bucket. This supports the ability to run `pasture` from multiple locations, but demands a rehydration step in order to position the dependencies. Rehydration simply requires authorization with Google and the `prefix` originally chosen:
