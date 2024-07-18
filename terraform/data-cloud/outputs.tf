@@ -24,12 +24,12 @@ locals {
   }
 }
 
-# resource "google_storage_bucket_object" "providers" {
-#   for_each = local.providers
-#   bucket   = var.state_bucket
-#   name     = "${var.state_dir}/${each.key}-providers.tf"
-#   content  = each.value
-# }
+resource "google_storage_bucket_object" "providers" {
+  for_each = local.providers
+  bucket   = var.state_bucket
+  name     = "${var.state_dir}/${each.key}-providers.tf"
+  content  = each.value
+}
 
 output "project_id" {
   description = "Details of pcreated projects"
