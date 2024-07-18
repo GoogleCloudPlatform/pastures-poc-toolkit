@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/compare/v1.0.0...v1.0.1) (2024-07-18)
+
+
+### Bug Fixes
+
+* Add sandbox group permissions ([#18](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/issues/18)) ([d4a8861](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/commit/d4a8861a29e2c0a79a9d19f142574465e1be8540))
+
 ## [1.0.0](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/compare/v0.7.2...v1.0.0) (2024-07-15)
 
 
