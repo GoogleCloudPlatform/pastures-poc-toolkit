@@ -93,17 +93,7 @@ pasture burn data-cloud --region us-central1 --pasture-size small
 
 ## Known Issues
 
-```
-Error: Error when reading or editing Storage Bucket "myproject-prod-resman-net-0": Get "https://storage.googleapis.com/storage/v1/b/dkl0011-prod-resman-net-0?alt=json&prettyPrint=false": dial tcp [2607:f8b0:400c:c08::cf]:443: connect: cannot assign requested address
-```
-
-This particular error happens on Cloud Shell. Simply re-run your pastures command.
-
-```
-dial tcp [2607:f8b0:400c:c08::cf]:443: connect: cannot assign requested address
-```
-
-
+See [Known Issues](docs/known_issues.md).
 
 ## State
 
