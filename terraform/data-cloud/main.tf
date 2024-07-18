@@ -36,6 +36,12 @@ resource "random_string" "random" {
 resource "google_folder" "data_cloud" {
   display_name = "Pasture Data Cloud"
   parent       = data.google_active_folder.sandbox.name
+
+  depends_on = [
+    google_folder_iam_member.folder_admin,
+    google_folder_iam_member.project_creator,
+    google_folder_iam_member.owner,
+  ]
 }
 
 module "projects" {
