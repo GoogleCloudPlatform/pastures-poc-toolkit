@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/compare/v1.0.1...v1.0.2) (2024-07-18)
+
+
+### Bug Fixes
+
+* Render seed provider file ([#20](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/issues/20)) ([83a85f9](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/commit/83a85f952518d864085f9bde2f4e5078ee01cb51))
+
 ## [1.0.1](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/compare/v1.0.0...v1.0.1) (2024-07-18)
 
 
