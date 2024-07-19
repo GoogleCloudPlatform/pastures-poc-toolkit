@@ -17,12 +17,14 @@
 locals {
   dimensions = {
     "small" = {
-      slots = 100
-      ram   = 16
+      slots   = 100
+      ram     = 16
+      edition = "BASIC"
     }
     "large" = {
-      slots = 200
-      ram   = 32
+      slots   = 200
+      ram     = 32
+      edition = "ENTERPRISE"
     }
   }
 }
@@ -105,6 +107,23 @@ resource "google_bigquery_bi_reservation" "bi_reservation" {
 
   location = var.locations.bq
   size     = local.dimensions[var.pasture_size].ram * pow(1024, 3)
+}
+
+module "datafusion" {
+  source     = "github.com/GoogleCloudPlatform/cloud-foundation-fabric//modules/datafusion?ref=v29.0.0"
+  project_id = module.projects.projects["lod"].id
+  name       = "pasture-datafusion"
+  region     = var.region
+  type       = local.dimensions[var.pasture_size].edition
+
+  network              = data.google_compute_networks.load.networks[0]
+  firewall_create      = true
+  ip_allocation_create = true
+  private_instance     = true
+  network_peering      = true
+
+  enable_stackdriver_logging    = true
+  enable_stackdriver_monitoring = true
 }
 
 module "data-platform" {

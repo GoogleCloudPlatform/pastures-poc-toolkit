@@ -110,7 +110,7 @@ Afterwards, you can continue running `pasture` as your normally would.
 
 | Name | Description | Docs | Est. Price Calculator |
 | ---- | ----------- | ---- | --------------------- |
-| `data-cloud` | Landing zone for data, analytics and generative AI | [cmd](docs/pasture_plant_data-cloud.md) | [Small](https://cloud.google.com/products/calculator?hl=en&dl=CiQ0Yzc1N2RjNC0yN2QyLTQyMmEtODlkZS0xYzkxNzAyM2JmNTgQCxokMzIxQTgxMTctN0Q3NC00QUU4LUE4NzAtNTJFNDIxMUMyNEYx)<br>[Big](https://cloud.google.com/products/calculator?hl=en&dl=CiRhYzk2Y2MzZS05ZWRkLTRmMDAtYWM5OS1lYmVmN2UyYjY0NTEQCxokRDkwRDA3OTEtNDE2Qi00ODNFLUJFRjctMjU3RTEwNkRCQzE5) |
+| `data-cloud` | Landing zone for data, analytics and generative AI | [cmd](docs/pasture_plant_data-cloud.md) | [Small](https://cloud.google.com/products/calculator-legacy#id=5c5c2811-605e-4bdd-94f6-d1c9a19defd5)<br>[Big](https://cloud.google.com/products/calculator-legacy#id=ab352e16-69de-4726-8e91-f1fe0475c3dc) |
 
 ## Blueprints
 
