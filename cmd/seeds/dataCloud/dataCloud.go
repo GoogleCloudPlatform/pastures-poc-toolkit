@@ -204,13 +204,13 @@ example of how to use this pasture:
 			fmt.Println("Stage complete:", s.Name)
 
 			if s.Type == "seed" && cmd.Parent().Name() == "plant" {
-				prj, err := terraform.TfOutput(s.Path, "project_id")
+				ep, err := terraform.TfOutput(s.Path, "datafusion_endpoint")
 
 				if err != nil {
 					fmt.Println("Stage complete:", s.Name)
 				}
 
-				fmt.Println("Access your seed project:", "https://console.cloud.google.com/welcome?project="+prj)
+				fmt.Println("Navigate to your Data Fusion endpoint to begin data ingestion and integration:", ep)
 			}
 		}
 	},

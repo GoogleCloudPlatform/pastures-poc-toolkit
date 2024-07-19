@@ -36,4 +36,9 @@ output "project_id" {
   value       = module.data-platform.projects.project_id.dropoff
 }
 
+output "datafusion_endpoint" {
+  description = "Endpoint hosting Data Fusion service"
+  value       = module.datafusion.service_endpoint
+}
+
 # TODO: add demo commands as an output here to echo to STDOUT

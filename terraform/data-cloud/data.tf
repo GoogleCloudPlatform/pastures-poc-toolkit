@@ -18,3 +18,7 @@ data "google_active_folder" "sandbox" {
   parent = "organizations/${var.organization.id}"
   display_name = "Sandbox"
 }
+
+data "google_compute_networks" "load" {
+  project = module.data-platform.projects.load
+}
