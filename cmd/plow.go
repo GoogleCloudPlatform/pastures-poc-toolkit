@@ -18,6 +18,7 @@ package cmd
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/internal/fabric"
 	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/internal/google"
@@ -47,9 +48,20 @@ var (
 		"terraform": "version",
 	}
 
+	groupIamRoles = []string{
+		"roles/billing.admin",
+		"roles/logging.admin",
+		"roles/iam.organizationRoleAdmin",
+		"roles/resourcemanager.projectCreator",
+		"roles/resourcemanager.organizationAdmin",
+		"roles/resourcemanager.tagAdmin",
+		"roles/resourcemanager.folderAdmin",
+		"roles/owner",
+	}
+
 	// global vars for other things TODO: these defaults likely belong somewhere else
-	iamRoles         = []string{"roles/resourcemanager.organizationAdmin"}
-	iamAdditiveRoles = []string{"roles/orgpolicy.policyAdmin"}
+	gIamRoles         = []string{"roles/resourcemanager.organizationAdmin"}
+	gIamAdditiveRoles = []string{"roles/orgpolicy.policyAdmin"}
 
 	// patch FAST not making these unique with prefixes
 	logSinks = fabric.LogSinks{
@@ -150,7 +162,7 @@ var plowCmd = &cobra.Command{
 			if isInternal {
 				var adds []*fabric.IamAdditive
 
-				for _, r := range iamRoles { // Authoritative bindings
+				for _, r := range gIamRoles { // Authoritative bindings
 					err := fastConfig.AddIamBinding(r, []string{"serviceAccount:" + orgAdminSa})
 
 					if err != nil {
@@ -158,7 +170,7 @@ var plowCmd = &cobra.Command{
 					}
 				}
 
-				for _, r := range iamAdditiveRoles { // Nonauthoritative bindings
+				for _, r := range gIamAdditiveRoles { // Nonauthoritative bindings
 					adds = append(adds, &fabric.IamAdditive{
 						Role:   r,
 						Member: "serviceAccount:" + orgAdminSa,
@@ -174,7 +186,15 @@ var plowCmd = &cobra.Command{
 				fastConfig.SetLogSinks(prefix, logSinks) // TODO: refactor to simple slice and iterate in method
 			}
 
-			// google.SetRequiredOrgIAMRoles(tfvars.Organization, userEmail) TODO: re-enable this
+			fmt.Println("Applying prerequisite roles to group:", group)
+
+			if err := google.SetRequiredOrgIAMRoles(fastConfig.Organization, group, groupIamRoles); err != nil {
+				fmt.Println("Unable to apply prerequisite roles to group:", group)
+				cobra.CheckErr(err)
+			}
+
+			fmt.Println("Waiting for role assignment propagation")
+			time.Sleep(10 * time.Second) // TODO: 10 seconds may or may not be enough for propagation
 
 			// Write the tfvars file
 			fmt.Println("Writing configuration file to path:", vars.LocalPath)
