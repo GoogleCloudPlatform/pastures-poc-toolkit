@@ -67,6 +67,14 @@ func (v *VarsFile) DownloadFile() error {
 	return nil
 }
 
+func (v *VarsFile) GetFileMetadata() error {
+	if _, err := google.GetObjectAttributes(v.Bucket, v.RemotePath); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func resmanDependencies(name string, stage string, prefix string, configPath string) *VarsFile {
 	vars := &VarsFile{
 		Name:       name,

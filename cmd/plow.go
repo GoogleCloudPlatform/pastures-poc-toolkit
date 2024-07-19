@@ -123,6 +123,11 @@ var plowCmd = &cobra.Command{
 		} else {
 			fmt.Println("Building a new configuration file")
 
+			if err := vars.GetFileMetadata(); err == nil {
+				err := fmt.Errorf("existing pasture for prefix %s found - try running plow with --rehydrate flag", prefix)
+				cobra.CheckErr(err)
+			}
+
 			// Build fastConfig struct
 			fastConfig := fabric.NewFastConfig()
 
