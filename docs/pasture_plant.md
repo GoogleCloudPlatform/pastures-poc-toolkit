@@ -24,6 +24,7 @@ A list of seed templates is shown by running:
 
 ```
       --config string   config file (default is $HOME/.pastures.yaml)
+      --verbose         controls Terraform output verbosity (default "false")
 ```
 
 ### SEE ALSO

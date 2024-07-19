@@ -58,6 +58,7 @@ pasture completions [bash|zsh|fish|powershell]
 
 ```
       --config string   config file (default is $HOME/.pastures.yaml)
+      --verbose         controls Terraform output verbosity (default "false")
 ```
 
 ### SEE ALSO

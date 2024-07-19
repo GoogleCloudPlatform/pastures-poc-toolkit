@@ -15,6 +15,7 @@ Pasture is a CLI toolkit that will create POC
       --config string   config file (default is $HOME/.pastures.yaml)
   -h, --help            help for pasture
   -t, --toggle          Help message for toggle
+      --verbose         controls Terraform output verbosity (default "false")
 ```
 
 ### SEE ALSO

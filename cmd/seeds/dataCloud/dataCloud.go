@@ -32,6 +32,7 @@ var (
 	skipFast bool
 	region   string
 	size     string
+	verbose  bool
 )
 
 // Set up pointers to support multiple distinct parents
@@ -66,6 +67,7 @@ example of how to use this pasture:
 		// Get persistent flags from parent
 		dryRun, _ = cmd.Flags().GetBool("dry-run")
 		skipFast, _ = cmd.Flags().GetBool("skip-foundation")
+		verbose, _ = cmd.Flags().GetBool("verbose")
 
 		// Hydrate configuration
 		varFile := fabric.LoadVarsFile(p, "")
@@ -112,12 +114,12 @@ example of how to use this pasture:
 			if dryRun && s.Name == "0-bootstrap" {
 				fmt.Println("Testing if foundation can be applied to GCP organization")
 
-				if err := s.Init(); err != nil {
+				if err := s.Init(verbose); err != nil {
 					fmt.Println("Cannot initialize stage for dry run")
 					cobra.CheckErr(err)
 				}
 
-				if err := s.Plan(); err != nil {
+				if err := s.Plan(verbose); err != nil {
 					fmt.Println("Foundation cannot be applied to GCP organization")
 					cobra.CheckErr(err)
 				}
@@ -149,7 +151,7 @@ example of how to use this pasture:
 
 			// check if state needs to be migrated
 			fmt.Println("Initializing", s.Name)
-			if err := s.Init(); err != nil {
+			if err := s.Init(verbose); err != nil {
 				fmt.Println("Failed to migrate state to remote backend")
 				cobra.CheckErr(err)
 			}
@@ -159,7 +161,7 @@ example of how to use this pasture:
 			if cmd.Parent().Name() == "burn" {
 				// destroy the stage
 				fmt.Println("Starting destroy:", s.Name)
-				if err := s.Destroy(seedVars); err != nil {
+				if err := s.Destroy(seedVars, verbose); err != nil {
 					fmt.Println("Stage failed to destroy:", s.Name)
 					cobra.CheckErr(err)
 				}
@@ -168,7 +170,7 @@ example of how to use this pasture:
 			} else {
 				// apply stage
 				fmt.Println("Starting apply:", s.Name)
-				if err := s.Apply(seedVars); err != nil {
+				if err := s.Apply(seedVars, verbose); err != nil {
 					fmt.Println("Stage failed to deploy:", s.Name)
 					cobra.CheckErr(err)
 				}
@@ -194,7 +196,7 @@ example of how to use this pasture:
 					}
 
 					// migrate the state
-					if err := s.Init(); err != nil {
+					if err := s.Init(verbose); err != nil {
 						fmt.Println("Failed to migrate state to remote backend")
 						cobra.CheckErr(err)
 					}
@@ -204,7 +206,7 @@ example of how to use this pasture:
 			fmt.Println("Stage complete:", s.Name)
 
 			if s.Type == "seed" && cmd.Parent().Name() == "plant" {
-				ep, err := terraform.TfOutput(s.Path, "datafusion_endpoint")
+				ep, err := terraform.TfOutput(s.Path, "datafusion_endpoint", verbose)
 
 				if err != nil {
 					fmt.Println("Stage complete:", s.Name)

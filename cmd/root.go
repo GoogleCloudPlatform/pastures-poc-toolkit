@@ -24,7 +24,10 @@ import (
 	"github.com/spf13/viper"
 )
 
-var cfgFile string
+var (
+	cfgFile string
+	verbose bool
+)
 
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
@@ -59,6 +62,7 @@ func init() {
 	// will be global for your application.
 
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.pastures.yaml)")
+	RootCmd.PersistentFlags().BoolVar(&verbose, "verbose", false, "controls Terraform output verbosity")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.

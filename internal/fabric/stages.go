@@ -126,22 +126,22 @@ func (s *Stage) DiscoverFiles() error {
 	return nil
 }
 
-func (s *Stage) Init() error {
+func (s *Stage) Init(verbose bool) error {
 	var migrate bool = false
 
 	// test if module initialized
-	_, err := terraform.TfPull(s.Path)
+	_, err := terraform.TfPull(s.Path, false) // never verbose a pull function
 
 	// try to initialize
 	if err != nil {
-		if err := terraform.TfInit(s.Path, false); err != nil {
+		if err := terraform.TfInit(s.Path, false, verbose); err != nil {
 			migrate = true
 		}
 	}
 
 	// try one more time, but migrate the state
 	if migrate {
-		if err := terraform.TfInit(s.Path, true); err != nil {
+		if err := terraform.TfInit(s.Path, true, verbose); err != nil {
 			return err
 		}
 	}
@@ -149,7 +149,7 @@ func (s *Stage) Init() error {
 	return nil
 }
 
-func (s *Stage) Plan() error {
+func (s *Stage) Plan(verbose bool) error {
 	var wg sync.WaitGroup
 	var files []string
 
@@ -163,12 +163,16 @@ func (s *Stage) Plan() error {
 	}
 
 	// start an overwatch
-	go utils.ProgressTicker(s.Type, &wg, done)
+	if !verbose {
+		go utils.ProgressTicker(s.Type, &wg, done)
+	}
 
 	// do what we came here to do
 	go func() {
-		planResult := terraform.TfPlan(s.Path, files, nil)
-		done <- true
+		planResult := terraform.TfPlan(s.Path, files, nil, verbose)
+		if !verbose {
+			done <- true // only fire this channel if ticker is running
+		}
 		result <- planResult
 	}()
 
@@ -189,7 +193,7 @@ func (s *Stage) Plan() error {
 	return nil
 }
 
-func (s *Stage) Apply(vars []*terraform.Vars) error {
+func (s *Stage) Apply(vars []*terraform.Vars, verbose bool) error {
 	var wg sync.WaitGroup
 	var files []string
 
@@ -203,12 +207,16 @@ func (s *Stage) Apply(vars []*terraform.Vars) error {
 	}
 
 	// start an overwatch
-	go utils.ProgressTicker(s.Name, &wg, done)
+	if !verbose {
+		go utils.ProgressTicker(s.Name, &wg, done)
+	}
 
 	// do what we came here to do
 	go func() {
-		applyErr := terraform.TfApply(s.Path, files, vars, nil)
-		done <- true
+		applyErr := terraform.TfApply(s.Path, files, vars, nil, verbose)
+		if !verbose {
+			done <- true // only fire this channel if ticker is running
+		}
 		err <- applyErr
 	}()
 
@@ -229,7 +237,7 @@ func (s *Stage) Apply(vars []*terraform.Vars) error {
 	return nil
 }
 
-func (s *Stage) Destroy(vars []*terraform.Vars) error {
+func (s *Stage) Destroy(vars []*terraform.Vars, verbose bool) error {
 	var wg sync.WaitGroup
 	var files []string
 
@@ -243,12 +251,16 @@ func (s *Stage) Destroy(vars []*terraform.Vars) error {
 	}
 
 	// start an overwatch
-	go utils.ProgressTicker(s.Name, &wg, done)
+	if !verbose {
+		go utils.ProgressTicker(s.Name, &wg, done)
+	}
 
 	// do what we came here to do
 	go func() {
-		destroyErr := terraform.TfDestroy(s.Path, files, vars, nil)
-		done <- true
+		destroyErr := terraform.TfDestroy(s.Path, files, vars, nil, verbose)
+		if !verbose {
+			done <- true // only fire this channel if ticker is running
+		}
 		err <- destroyErr
 	}()
 

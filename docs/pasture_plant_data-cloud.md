@@ -27,6 +27,7 @@ pasture plant data-cloud [flags]
 ```
       --config string   config file (default is $HOME/.pastures.yaml)
       --dry-run         Displays the desired state of the POC
+      --verbose         controls Terraform output verbosity (default "false")
 ```
 
 ### SEE ALSO
