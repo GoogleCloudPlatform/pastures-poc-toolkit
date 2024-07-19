@@ -126,22 +126,22 @@ func (s *Stage) DiscoverFiles() error {
 	return nil
 }
 
-func (s *Stage) Init() error {
+func (s *Stage) Init(verbose bool) error {
 	var migrate bool = false
 
 	// test if module initialized
-	_, err := terraform.TfPull(s.Path)
+	_, err := terraform.TfPull(s.Path, verbose)
 
 	// try to initialize
 	if err != nil {
-		if err := terraform.TfInit(s.Path, false); err != nil {
+		if err := terraform.TfInit(s.Path, false, verbose); err != nil {
 			migrate = true
 		}
 	}
 
 	// try one more time, but migrate the state
 	if migrate {
-		if err := terraform.TfInit(s.Path, true); err != nil {
+		if err := terraform.TfInit(s.Path, true, verbose); err != nil {
 			return err
 		}
 	}
@@ -149,7 +149,7 @@ func (s *Stage) Init() error {
 	return nil
 }
 
-func (s *Stage) Plan() error {
+func (s *Stage) Plan(verbose bool) error {
 	var wg sync.WaitGroup
 	var files []string
 
@@ -163,11 +163,13 @@ func (s *Stage) Plan() error {
 	}
 
 	// start an overwatch
-	go utils.ProgressTicker(s.Type, &wg, done)
+	if !verbose {
+		go utils.ProgressTicker(s.Type, &wg, done)
+	}
 
 	// do what we came here to do
 	go func() {
-		planResult := terraform.TfPlan(s.Path, files, nil)
+		planResult := terraform.TfPlan(s.Path, files, nil, verbose)
 		done <- true
 		result <- planResult
 	}()
@@ -189,7 +191,7 @@ func (s *Stage) Plan() error {
 	return nil
 }
 
-func (s *Stage) Apply(vars []*terraform.Vars) error {
+func (s *Stage) Apply(vars []*terraform.Vars, verbose bool) error {
 	var wg sync.WaitGroup
 	var files []string
 
@@ -203,11 +205,13 @@ func (s *Stage) Apply(vars []*terraform.Vars) error {
 	}
 
 	// start an overwatch
-	go utils.ProgressTicker(s.Name, &wg, done)
+	if !verbose {
+		go utils.ProgressTicker(s.Name, &wg, done)
+	}
 
 	// do what we came here to do
 	go func() {
-		applyErr := terraform.TfApply(s.Path, files, vars, nil)
+		applyErr := terraform.TfApply(s.Path, files, vars, nil, verbose)
 		done <- true
 		err <- applyErr
 	}()
@@ -229,7 +233,7 @@ func (s *Stage) Apply(vars []*terraform.Vars) error {
 	return nil
 }
 
-func (s *Stage) Destroy(vars []*terraform.Vars) error {
+func (s *Stage) Destroy(vars []*terraform.Vars, verbose bool) error {
 	var wg sync.WaitGroup
 	var files []string
 
@@ -243,11 +247,13 @@ func (s *Stage) Destroy(vars []*terraform.Vars) error {
 	}
 
 	// start an overwatch
-	go utils.ProgressTicker(s.Name, &wg, done)
+	if !verbose {
+		go utils.ProgressTicker(s.Name, &wg, done)
+	}
 
 	// do what we came here to do
 	go func() {
-		destroyErr := terraform.TfDestroy(s.Path, files, vars, nil)
+		destroyErr := terraform.TfDestroy(s.Path, files, vars, nil, verbose)
 		done <- true
 		err <- destroyErr
 	}()

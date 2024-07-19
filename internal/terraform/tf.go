@@ -29,13 +29,13 @@ import (
 	"github.com/hashicorp/terraform-exec/tfexec"
 )
 
-func TfInit(dir string, m bool) error {
+func TfInit(dir string, m bool, verbose bool) error {
 	//var w string
 	var tfInitOptions []tfexec.InitOption
 
 	ctx := context.Background()
 
-	tf, _ := initializeTerraformClient(dir)
+	tf, _ := initializeTerraformClient(dir, verbose)
 
 	// If true, we need to migrate the state to a remote location
 	if m {
@@ -47,7 +47,7 @@ func TfInit(dir string, m bool) error {
 	return err
 }
 
-func TfPlan(dir string, varFiles []string, vars []Vars) PlanResult {
+func TfPlan(dir string, varFiles []string, vars []Vars, verbose bool) PlanResult {
 	var tfPlanOptions []tfexec.PlanOption
 	var result PlanResult
 
@@ -60,7 +60,7 @@ func TfPlan(dir string, varFiles []string, vars []Vars) PlanResult {
 		return result
 	}
 
-	tf, err := buildClient(dir, p)
+	tf, err := buildClient(dir, p, verbose)
 
 	if err != nil {
 		result.Err = err
@@ -110,13 +110,13 @@ func TfPlan(dir string, varFiles []string, vars []Vars) PlanResult {
 	return result
 }
 
-func TfApply(dir string, varFiles []string, vars []*Vars, targets []string) error {
+func TfApply(dir string, varFiles []string, vars []*Vars, targets []string, verbose bool) error {
 	var tfApplyOptions []tfexec.ApplyOption
 
 	// find the binary and setup the client
 	ctx := context.Background()
 
-	tf, _ := initializeTerraformClient(dir)
+	tf, _ := initializeTerraformClient(dir, verbose)
 
 	// include a var files if they're provided
 	for _, v := range varFiles {
@@ -146,13 +146,13 @@ func TfApply(dir string, varFiles []string, vars []*Vars, targets []string) erro
 	return nil
 }
 
-func TfDestroy(dir string, varFiles []string, vars []*Vars, targets []string) error {
+func TfDestroy(dir string, varFiles []string, vars []*Vars, targets []string, verbose bool) error {
 	var tfDestroyOptions []tfexec.DestroyOption
 
 	// find the binary and setup the client
 	ctx := context.Background()
 
-	tf, _ := initializeTerraformClient(dir)
+	tf, _ := initializeTerraformClient(dir, verbose)
 
 	// include a var files if they're provided
 	for _, v := range varFiles {
@@ -180,12 +180,12 @@ func TfDestroy(dir string, varFiles []string, vars []*Vars, targets []string) er
 	return nil
 }
 
-func TfOutput(dir string, outputVar string) (string, error) {
+func TfOutput(dir string, outputVar string, verbose bool) (string, error) {
 	var output string
 
 	ctx := context.Background()
 
-	tf, _ := initializeTerraformClient(dir)
+	tf, _ := initializeTerraformClient(dir, verbose)
 
 	outputs, err := tf.Output(ctx)
 
@@ -210,10 +210,10 @@ func TfOutput(dir string, outputVar string) (string, error) {
 	return output, nil
 }
 
-func TfShow(dir string) (string, error) {
+func TfShow(dir string, verbose bool) (string, error) {
 	ctx := context.Background()
 
-	tf, _ := initializeTerraformClient(dir)
+	tf, _ := initializeTerraformClient(dir, verbose)
 
 	_, err := tf.Show(ctx) // TODO: actually catch state if no error
 
@@ -224,10 +224,10 @@ func TfShow(dir string) (string, error) {
 	return "", err // TODO: actually export state
 }
 
-func TfPull(dir string) (string, error) {
+func TfPull(dir string, verbose bool) (string, error) {
 	ctx := context.Background()
 
-	tf, _ := initializeTerraformClient(dir)
+	tf, _ := initializeTerraformClient(dir, verbose)
 
 	s, err := tf.StatePull(ctx)
 
@@ -249,11 +249,15 @@ func AddVar(k string, v string) *Vars {
 	}
 }
 
-func buildClient(d string, p string) (*tfexec.Terraform, error) {
+func buildClient(d string, p string, v bool) (*tfexec.Terraform, error) {
 	tf, err := tfexec.NewTerraform(d, p)
 
 	if err != nil {
 		return nil, err // error building Terraform client
+	}
+
+	if v {
+		tf.SetStdout(os.Stdout) // Write tf logs to stdout
 	}
 
 	return tf, nil
@@ -269,12 +273,12 @@ func findBinary() (string, error) {
 	return execPath, nil
 }
 
-func initializeTerraformClient(dir string) (*tfexec.Terraform, error) {
+func initializeTerraformClient(dir string, v bool) (*tfexec.Terraform, error) {
 	p, err := findBinary()
 	if err != nil {
 		return nil, err
 	}
-	tf, err := buildClient(dir, p)
+	tf, err := buildClient(dir, p, v)
 	if err != nil {
 		return nil, err
 	}
