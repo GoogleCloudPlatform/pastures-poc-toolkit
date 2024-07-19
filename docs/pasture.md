@@ -20,5 +20,7 @@ Pasture is a CLI toolkit that will create POC
 ### SEE ALSO
 
 * [pasture burn](pasture_burn.md)	 - Removes the POC resources created by a seed.
+* [pasture completions](pasture_completions.md)	 - Generate completion script
 * [pasture plant](pasture_plant.md)	 - Creates a POC environment from a template
 * [pasture plow](pasture_plow.md)	 - Initializes environment configuration
+* [pasture version](pasture_version.md)	 - Displays Pasture binary version
