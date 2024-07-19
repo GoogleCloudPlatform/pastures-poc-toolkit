@@ -23,6 +23,9 @@ The Pastures Proof of Concept (PoC) utility is used to bootstrap greenfield, pro
 
 The following bash script can be used to quickly assign these permissions to your account:
 
+> [!NOTE]
+> These prerequisite roles are automatically assigned to the pasture group you supply as a flag to the `plow` subcommand
+
 ```shell
 # set variable for current logged in user
 export PASTURE_USER=$(gcloud config list --format 'value(core.account)')
