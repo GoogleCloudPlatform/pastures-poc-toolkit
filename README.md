@@ -63,7 +63,7 @@ sudo chmod +x /usr/local/bin/pasture
 <!-- x-release-please-end -->
 ## Quickstart
 
-**Note: We recommend running this quickstart from a Cloud Shell environment**
+We recommend running this quickstart from a Cloud Shell environment.
 
 1. Configure your local Pastures environment by:
     - Defining a prefix for resource naming
@@ -78,9 +78,7 @@ sudo chmod +x /usr/local/bin/pasture
 pasture plow --prefix example1 --group-owner pasture-group --domain example.com --billing-account ABCDEF-GHIJKL-MNOPQ
 ```
 
-1. Create a pasture by indicating which seed template you'd like to deploy:
-
-**Note: This could take up to 15 minutes to deploy**
+1. Create a pasture by indicating which seed template you'd like to deploy (could take ~15 mins to complete):
 
 ```shell
 pasture plant data-cloud --region us-central1 --pasture-size small
