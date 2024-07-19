@@ -78,7 +78,7 @@ We recommend running this quickstart from a Cloud Shell environment.
 pasture plow --prefix example1 --group-owner pasture-group --domain example.com --billing-account ABCDEF-GHIJKL-MNOPQ
 ```
 
-1. Create a pasture by indicating which seed template you'd like to deploy (could take ~15 mins to complete):
+2. Create a pasture by indicating which seed template you'd like to deploy (could take ~15 mins to complete):
 
 ```shell
 pasture plant data-cloud --region us-central1 --pasture-size small
