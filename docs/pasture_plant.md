@@ -29,4 +29,4 @@ A list of seed templates is shown by running:
 ### SEE ALSO
 
 * [pasture](pasture.md)	 - A POC toolkit for Google Cloud
-* [pasture plant data-cloud](pasture_plant_data-cloud.md)	 - Deploy a Data Cloud pasture with optional jumpstarts
+* [pasture plant data-cloud](pasture_plant_data-cloud.md)	 - Deploy a Data Cloud pasture with blueprints
