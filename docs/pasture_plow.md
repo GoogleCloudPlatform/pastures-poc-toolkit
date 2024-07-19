@@ -21,6 +21,7 @@ pasture plow [flags]
   -l, --location string          GCP multi-region location code (default "US")
   -p, --prefix string            Prefix for resources with unique names (max 9 characters)
       --rehydrate                Restore previous Pastures configuration from saved version in GCS bucket
+      --seed-version string      Version of pasture seed terraform modules to use
 ```
 
 ### Options inherited from parent commands

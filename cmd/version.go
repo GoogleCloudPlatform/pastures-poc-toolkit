@@ -29,7 +29,7 @@ var versionCmd = &cobra.Command{
 	Long:  "Displays Pasture binary version",
 	Args:  cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Pastures version", seedVer)
+		fmt.Println("Pastures version", pastureVer)
 	},
 }
 

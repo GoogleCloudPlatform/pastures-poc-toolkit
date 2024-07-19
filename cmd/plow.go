@@ -27,7 +27,7 @@ import (
 )
 
 const (
-	seedVer = "v1.0.2" // x-release-please-version
+	pastureVer = "v1.0.2" // x-release-please-version
 )
 
 var (
@@ -41,6 +41,7 @@ var (
 	group            string
 	orgAdminSa       string
 	rehydrate        bool
+	seedVer          string
 
 	// static variables for prerequisites, etc
 	reqBinaries = map[string]string{
@@ -95,8 +96,6 @@ var plowCmd = &cobra.Command{
 				cobra.CheckErr(err)
 			}
 		}
-
-		// TODO: Ensure bootstrap_user has ProjectCreator role
 
 		// Construct path for all config
 		path, err := utils.ConfigPath()
@@ -285,6 +284,7 @@ func init() {
 	plowCmd.Flags().StringVarP(&group, "group-owner", "g", "", "Name of Cloud Identity group that owns the pastures")
 	plowCmd.Flags().StringVar(&orgAdminSa, "org-admin-sa", "", "Service account email of the internal environment administrator")
 	plowCmd.Flags().BoolVar(&rehydrate, "rehydrate", false, "Restore previous Pastures configuration from saved version in GCS bucket")
+	plowCmd.Flags().StringVar(&seedVer, "seed-version", pastureVer, "Version of pasture seed terraform modules to use")
 
 	// One of these flags is required
 	plowCmd.MarkFlagsOneRequired("domain", "rehydrate")
