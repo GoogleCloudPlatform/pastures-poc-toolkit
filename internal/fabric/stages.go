@@ -130,7 +130,7 @@ func (s *Stage) Init(verbose bool) error {
 	var migrate bool = false
 
 	// test if module initialized
-	_, err := terraform.TfPull(s.Path, verbose)
+	_, err := terraform.TfPull(s.Path, false) // never verbose a pull function
 
 	// try to initialize
 	if err != nil {
@@ -170,7 +170,9 @@ func (s *Stage) Plan(verbose bool) error {
 	// do what we came here to do
 	go func() {
 		planResult := terraform.TfPlan(s.Path, files, nil, verbose)
-		done <- true
+		if !verbose {
+			done <- true // only fire this channel if ticker is running
+		}
 		result <- planResult
 	}()
 
@@ -212,7 +214,9 @@ func (s *Stage) Apply(vars []*terraform.Vars, verbose bool) error {
 	// do what we came here to do
 	go func() {
 		applyErr := terraform.TfApply(s.Path, files, vars, nil, verbose)
-		done <- true
+		if !verbose {
+			done <- true // only fire this channel if ticker is running
+		}
 		err <- applyErr
 	}()
 
@@ -254,7 +258,9 @@ func (s *Stage) Destroy(vars []*terraform.Vars, verbose bool) error {
 	// do what we came here to do
 	go func() {
 		destroyErr := terraform.TfDestroy(s.Path, files, vars, nil, verbose)
-		done <- true
+		if !verbose {
+			done <- true // only fire this channel if ticker is running
+		}
 		err <- destroyErr
 	}()
 
