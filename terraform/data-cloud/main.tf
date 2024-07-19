@@ -17,12 +17,14 @@
 locals {
   dimensions = {
     "small" = {
-      slots = 100
-      ram   = 16
+      slots   = 100
+      ram     = 16
+      edition = "BASIC"
     }
     "large" = {
-      slots = 200
-      ram   = 32
+      slots   = 200
+      ram     = 32
+      edition = "ENTERPRISE"
     }
   }
 }
@@ -112,7 +114,7 @@ module "datafusion" {
   project_id = module.projects.projects["lod"].id
   name       = "pasture-datafusion"
   region     = var.region
-  type       = "ENTERPRISE"
+  type       = local.dimensions[var.pasture_size].edition
 
   network              = data.google_compute_networks.load.networks[0]
   firewall_create      = true
