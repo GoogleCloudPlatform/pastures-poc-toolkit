@@ -2,17 +2,15 @@
 
 ### What is the purpose of Pastures?
 
-Pastures is intended to accelerate and simplify full-featured experimentation on Google Cloud using production-ready foundations that can be quickly promoted or destroyed once completed. It relies extensively on established frameworks and jumpstarts to provide a workable environment for most use cases, and eliminates landing zone toil/rework that is often encountered when promoting a PoC use case to production.
+Pastures is intended to accelerate and simplify full-featured experimentation on Google Cloud using production-ready foundations that can be quickly promoted or destroyed once completed. It relies extensively on established frameworks and blueprints to provide a workable environment for most use cases, and eliminates landing zone toil/rework that is often encountered when promoting a PoC use case to production.
 
 ### What does Pastures deploy?
 
-Pastures deploys three discrete subassemblies:
+Pastures deploys two discrete subassemblies:
 
 1. [FAST](https://github.com/GoogleCloudPlatform/cloud-foundation-fabric/blob/v29.0.0/fast/README.md) Foundation - Bootstrap and Resource Management stages are deployed with secure-by-default configurations to establish a hierarchy for subsequent stages to be deployed
 
-2. Seed Template Projects - An opinionated implementation of a Google Cloud solution pillar, e.g. Data Cloud, Open Cloud, etc. These seeds provide a full-featured, proof-of-concept landing zone for use case experimentation
-
-3. [Optional] Seed Jumpstarts - To further accelerate use case prototyping, each seed can optionally be paired with a [Google Cloud Jumpstart](https://cloud.google.com/architecture/all-jss-guides). These jumpstarts provide best-practice solutions designed with common use cases in mind.
+2. Seed Blueprints - To further accelerate use case prototyping, each seed is paired with a [Google Cloud Blueprint](https://github.com/GoogleCloudPlatform/cloud-foundation-fabric/blob/v29.0.0/blueprints/README.md). These blueprints provide best-practice solutions designed with common use cases in mind.
 
 ### What is the Fabric FAST foundation?
 
