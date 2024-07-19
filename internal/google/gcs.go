@@ -98,3 +98,19 @@ func UploadObject(bucketName string, objectPath string, localPath string) error 
 
 	return nil
 }
+
+func GetObjectAttributes(bucketName string, objectPath string) (*storage.ObjectAttrs, error) {
+	ctx := context.Background()
+
+	client, err := storage.NewClient(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create storage client: %w", err)
+	}
+
+	objAttrs, err := client.Bucket(bucketName).Object(objectPath).Attrs(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return objAttrs, nil
+}
