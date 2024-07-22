@@ -93,3 +93,10 @@ variable "pasture_size" {
   nullable    = false
   default     = "small"
 }
+
+variable "internal_env" {
+  description = "Internal Googler environment with reservation restrictions"
+  type        = string
+  default     = "false"
+  nullable    = false
+}
