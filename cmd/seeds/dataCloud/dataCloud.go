@@ -228,7 +228,7 @@ func init() {
 	DataCloudBurn.Flags().StringVarP(&size, "pasture-size", "s", "", "Size of pasture environment - must be 'big' or 'small'")
 
 	// Required flags
-	if err := DataCloudPlant.MarkFlagRequired("pasture-size"); err != nil {
+	if err := DataCloudPlant.MarkFlagRequired("region"); err != nil {
 		cobra.CheckErr(err)
 	}
 
