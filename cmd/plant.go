@@ -50,6 +50,7 @@ func init() {
 	plantCmd.PersistentFlags().Bool("skip-foundation", false, "Prevents the Fabric FAST landing zone deployment")
 	plantCmd.PersistentFlags().Bool("dry-run", false, "Displays the desired state of the POC")
 	plantCmd.PersistentFlags().Bool("local-only", false, "Skip migrating state and vars to remote backend")
+	plantCmd.PersistentFlags().BoolP("internal", "G", false, "Internal use only")
 
 	// Hide these flags
 	if err := plantCmd.PersistentFlags().MarkHidden("skip-foundation"); err != nil {
@@ -57,6 +58,10 @@ func init() {
 	}
 
 	if err := plantCmd.PersistentFlags().MarkHidden("local-only"); err != nil {
+		cobra.CheckErr(err)
+	}
+
+	if err := plantCmd.PersistentFlags().MarkHidden("internal"); err != nil {
 		cobra.CheckErr(err)
 	}
 

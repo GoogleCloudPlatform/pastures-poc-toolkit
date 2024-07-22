@@ -49,6 +49,7 @@ func init() {
 	burnCmd.PersistentFlags().Bool("skip-foundation", false, "Prevents the Fabric FAST landing zone deployment")
 	burnCmd.PersistentFlags().Bool("dry-run", false, "Displays the desired state of the POC")
 	burnCmd.PersistentFlags().Bool("local-only", false, "Skip migrating state and vars to remote backend")
+	burnCmd.PersistentFlags().BoolP("internal", "G", false, "Internal use only")
 
 	// Hide these flags
 	if err := burnCmd.PersistentFlags().MarkHidden("skip-foundation"); err != nil {
@@ -59,6 +60,11 @@ func init() {
 		cobra.CheckErr(err)
 	}
 
+	if err := burnCmd.PersistentFlags().MarkHidden("internal"); err != nil {
+		cobra.CheckErr(err)
+	}
+
+	// Load seed command palettes
 	addSeedToBurn()
 }
 

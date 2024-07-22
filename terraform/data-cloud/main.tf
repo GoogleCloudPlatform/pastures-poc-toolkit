@@ -81,6 +81,7 @@ module "projects" {
 }
 
 resource "google_bigquery_reservation" "reservation" {
+  count   = var.internal_env == "true" ? 0 : 1
   project = module.projects.projects["cmn"].id
 
   name              = "pastures-data-cloud"
@@ -95,14 +96,16 @@ resource "google_bigquery_reservation" "reservation" {
 }
 
 resource "google_bigquery_reservation_assignment" "assignment" {
+  count   = var.internal_env == "true" ? 0 : 1
   project = module.projects.projects["cmn"].id
 
   assignee    = google_folder.data_cloud.id
   job_type    = "QUERY"
-  reservation = google_bigquery_reservation.reservation.id
+  reservation = google_bigquery_reservation.reservation[0].id
 }
 
 resource "google_bigquery_bi_reservation" "bi_reservation" {
+  count   = var.internal_env == "true" ? 0 : 1
   project = module.projects.projects["exp"].id
 
   location = var.locations.bq

@@ -28,11 +28,12 @@ import (
 )
 
 var (
-	dryRun   bool
-	skipFast bool
-	region   string
-	size     string
-	verbose  bool
+	dryRun     bool
+	skipFast   bool
+	region     string
+	size       string
+	verbose    bool
+	isInternal bool
 )
 
 // Set up pointers to support multiple distinct parents
@@ -68,6 +69,7 @@ example of how to use this pasture:
 		dryRun, _ = cmd.Flags().GetBool("dry-run")
 		skipFast, _ = cmd.Flags().GetBool("skip-foundation")
 		verbose, _ = cmd.Flags().GetBool("verbose")
+		isInternal, _ = cmd.Flags().GetBool("internal")
 
 		// Hydrate configuration
 		varFile := fabric.LoadVarsFile(p, "")
@@ -134,6 +136,10 @@ example of how to use this pasture:
 				seedVars = append(seedVars, terraform.AddVar("state_bucket", s.ProviderFile.Bucket))
 				seedVars = append(seedVars, terraform.AddVar("state_dir", strings.Split(s.ProviderFile.RemotePath, "/")[0]))
 				seedVars = append(seedVars, terraform.AddVar("pasture_size", size))
+
+				if isInternal {
+					seedVars = append(seedVars, terraform.AddVar("internal_env", "true"))
+				}
 			}
 
 			// do what we came here to do
