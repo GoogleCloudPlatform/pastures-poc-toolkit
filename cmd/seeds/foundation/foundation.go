@@ -14,42 +14,37 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package dataCloud
+package foundation
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/internal/fabric"
 	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/internal/google"
-	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/internal/terraform"
 	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/internal/utils"
 	"github.com/spf13/cobra"
 )
 
 var (
-	dryRun   bool
-	skipFast bool
-	region   string
-	size     string
-	verbose  bool
+	dryRun  bool
+	verbose bool
 )
 
 // Set up pointers to support multiple distinct parents
 var (
-	DataCloudPlant = *DataCloudCmd
-	DataCloudBurn  = *DataCloudCmd
+	FoundationPlant = *FoundationCmd
+	FoundationBurn  = *FoundationCmd
 )
 
-// DataCloudCmd represents the dataCloud command
-var DataCloudCmd = &cobra.Command{
-	Use:   "data-cloud",
-	Short: "Deploy a Data Cloud pasture with blueprints",
-	Long: `Creates a data-cloud landing zone in a FAST foundation sandbox.
-Blueprints are deployed as features into the landing zone. An
+// FoundationCmd represents the foundation command
+var FoundationCmd = &cobra.Command{
+	Use:   "foundation",
+	Short: "Deploy a foundation-only pasture with no blueprints",
+	Long: `Creates a foundation landing zone from the FAST framework.
+Projects can optionally be deployed as features into the landing zone. An
 example of how to use this pasture:
 	
-	pasture plant data-cloud --region us-central1 --pasture-size small`,
+	pasture plant foundation`,
 	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Construct path for the config
@@ -66,7 +61,6 @@ example of how to use this pasture:
 
 		// Get persistent flags from parent
 		dryRun, _ = cmd.Flags().GetBool("dry-run")
-		skipFast, _ = cmd.Flags().GetBool("skip-foundation")
 		verbose, _ = cmd.Flags().GetBool("verbose")
 
 		// Hydrate configuration
@@ -84,28 +78,12 @@ example of how to use this pasture:
 		// Load foundation stages
 		stages := fabric.InitializeStages(p, varData.Prefix, varFile)
 
-		// Seed stage
-		seed := fabric.NewSeedStage(p)
-		seed.HydrateSeed(cmd.Use, varData.Prefix, p)
-		seed.AddVarFile(varFile)
-
-		// All at once
-		stages = append(stages, seed)
-
 		// Do things with the stages
 		for _, s := range stages {
 			var firstRun bool = false
 
-			seedVars := make([]*terraform.Vars, 0)
-
 			// burn not supported for foundation stage
 			if cmd.Parent().Name() == "burn" && s.Type == "foundation" {
-				fmt.Println("Skipping foundation stage:", s.Name)
-				continue
-			}
-
-			// skip foundation stages
-			if skipFast && s.Type == "foundation" {
 				fmt.Println("Skipping foundation stage:", s.Name)
 				continue
 			}
@@ -126,14 +104,6 @@ example of how to use this pasture:
 
 				fmt.Println("Foundation can be applied to GCP organization")
 				break // Don't do anything else
-			}
-
-			// Seed variables
-			if s.Type == "seed" {
-				seedVars = append(seedVars, terraform.AddVar("region", region))
-				seedVars = append(seedVars, terraform.AddVar("state_bucket", s.ProviderFile.Bucket))
-				seedVars = append(seedVars, terraform.AddVar("state_dir", strings.Split(s.ProviderFile.RemotePath, "/")[0]))
-				seedVars = append(seedVars, terraform.AddVar("pasture_size", size))
 			}
 
 			// do what we came here to do
@@ -161,7 +131,7 @@ example of how to use this pasture:
 			if cmd.Parent().Name() == "burn" {
 				// destroy the stage
 				fmt.Println("Starting destroy:", s.Name)
-				if err := s.Destroy(seedVars, verbose); err != nil {
+				if err := s.Destroy(nil, verbose); err != nil {
 					fmt.Println("Stage failed to destroy:", s.Name)
 					cobra.CheckErr(err)
 				}
@@ -170,7 +140,7 @@ example of how to use this pasture:
 			} else {
 				// apply stage
 				fmt.Println("Starting apply:", s.Name)
-				if err := s.Apply(seedVars, verbose); err != nil {
+				if err := s.Apply(nil, verbose); err != nil {
 					fmt.Println("Stage failed to deploy:", s.Name)
 					cobra.CheckErr(err)
 				}
@@ -204,35 +174,10 @@ example of how to use this pasture:
 			}
 
 			fmt.Println("Stage complete:", s.Name)
-
-			if s.Type == "seed" && cmd.Parent().Name() == "plant" {
-				ep, err := terraform.TfOutput(s.Path, "datafusion_endpoint", verbose)
-
-				if err != nil {
-					fmt.Println("Stage complete:", s.Name)
-				}
-
-				fmt.Println("Navigate to your Data Fusion endpoint to begin data ingestion and integration:", ep)
-			}
 		}
+
+		fmt.Println("Navigate to the Google Cloud Console to deploy your first workload:", "https://console.cloud.google.com/welcome")
 	},
 }
 
-func init() {
-	// Define and add flags for the seed
-	DataCloudPlant.Flags().StringVarP(&region, "region", "r", "us-central1", "Region for GCP resources to be deployed")
-	DataCloudPlant.Flags().StringVarP(&size, "pasture-size", "s", "", "Size of pasture environment - must be 'big' or 'small'")
-
-	// TODO: is there a better way to do this in Cobra?
-	DataCloudBurn.Flags().StringVarP(&region, "region", "r", "us-central1", "Region for GCP resources to be deployed")
-	DataCloudBurn.Flags().StringVarP(&size, "pasture-size", "s", "", "Size of pasture environment - must be 'big' or 'small'")
-
-	// Required flags
-	if err := DataCloudPlant.MarkFlagRequired("region"); err != nil {
-		cobra.CheckErr(err)
-	}
-
-	if err := DataCloudBurn.MarkFlagRequired("pasture-size"); err != nil {
-		cobra.CheckErr(err)
-	}
-}
+func init() {}

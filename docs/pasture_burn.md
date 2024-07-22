@@ -31,3 +31,4 @@ A list of seed templates is shown by running:
 
 * [pasture](pasture.md)	 - A POC toolkit for Google Cloud
 * [pasture burn data-cloud](pasture_burn_data-cloud.md)	 - Deploy a Data Cloud pasture with blueprints
+* [pasture burn foundation](pasture_burn_foundation.md)	 - Deploy a foundation-only pasture with no blueprints

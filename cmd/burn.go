@@ -17,8 +17,9 @@ limitations under the License.
 package cmd
 
 import (
-	"github.com/spf13/cobra"
 	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/cmd/seeds/dataCloud"
+	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/cmd/seeds/foundation"
+	"github.com/spf13/cobra"
 )
 
 // burnCmd represents the burn command
@@ -63,4 +64,5 @@ func init() {
 
 func addSeedToBurn() {
 	burnCmd.AddCommand(&dataCloud.DataCloudBurn)
+	burnCmd.AddCommand(&foundation.FoundationBurn)
 }

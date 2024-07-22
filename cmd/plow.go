@@ -42,6 +42,7 @@ var (
 	orgAdminSa       string
 	rehydrate        bool
 	seedVer          string
+	skipSeed         bool
 
 	// static variables for prerequisites, etc
 	reqBinaries = map[string]string{
@@ -147,7 +148,14 @@ var plowCmd = &cobra.Command{
 			}
 			fastConfig.SetBilling(billingAccountId, isInternal)
 			fastConfig.SetUser(email)
-			fastConfig.SetFeatures()
+
+			// Enable sandbox for seeds
+			if skipSeed {
+				fastConfig.SetFeatures(false)
+			} else {
+				fastConfig.SetFeatures(true)
+			}
+
 			fastConfig.SetLocations(location)
 
 			if err := fastConfig.SetPrefix(prefix); err != nil {
@@ -210,7 +218,9 @@ var plowCmd = &cobra.Command{
 		stages := fabric.InitializeStages(path, prefix, vars)
 
 		// Create seed stage shell and append to foundations
-		stages = append(stages, fabric.NewSeedStage(path))
+		if !skipSeed {
+			stages = append(stages, fabric.NewSeedStage(path))
+		}
 
 		for i, s := range stages {
 			// clone repositories
@@ -285,6 +295,7 @@ func init() {
 	plowCmd.Flags().StringVar(&orgAdminSa, "org-admin-sa", "", "Service account email of the internal environment administrator")
 	plowCmd.Flags().BoolVar(&rehydrate, "rehydrate", false, "Restore previous Pastures configuration from saved version in GCS bucket")
 	plowCmd.Flags().StringVar(&seedVer, "seed-version", pastureVer, "Version of pasture seed terraform modules to use")
+	plowCmd.Flags().BoolVar(&skipSeed, "skip-seed", false, "Limits deployment to FAST foundation only")
 
 	// One of these flags is required
 	plowCmd.MarkFlagsOneRequired("domain", "rehydrate")
@@ -308,6 +319,10 @@ func init() {
 	}
 
 	if err := plowCmd.Flags().MarkHidden("org-admin-sa"); err != nil {
+		cobra.CheckErr(err)
+	}
+
+	if err := plowCmd.Flags().MarkHidden("skip-seed"); err != nil {
 		cobra.CheckErr(err)
 	}
 
