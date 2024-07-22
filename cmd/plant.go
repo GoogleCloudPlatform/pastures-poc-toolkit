@@ -18,6 +18,7 @@ package cmd
 
 import (
 	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/cmd/seeds/dataCloud"
+	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/cmd/seeds/foundation"
 	"github.com/spf13/cobra"
 )
 
@@ -65,4 +66,5 @@ func init() {
 
 func addSeedToPlant() {
 	plantCmd.AddCommand(&dataCloud.DataCloudPlant)
+	plantCmd.AddCommand(&foundation.FoundationPlant)
 }

@@ -58,10 +58,10 @@ func (f *FastConfig) SetUser(e string) {
 	f.BootstrapUser = e
 }
 
-func (f *FastConfig) SetFeatures() { // TODO: move this default somewhere else
+func (f *FastConfig) SetFeatures(sandbox bool) { // TODO: move this default somewhere else
 	var a FastFeatures
 
-	a.Sandbox = true
+	a.Sandbox = sandbox
 	f.FastFeatures = &a
 }
 
