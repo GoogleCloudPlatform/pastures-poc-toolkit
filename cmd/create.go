@@ -22,18 +22,18 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// plantCmd represents the plant command
-var plantCmd = &cobra.Command{
-	Use:   "plant SEED",
+// createCmd represents the create command
+var createCmd = &cobra.Command{
+	Use:   "create SEED",
 	Short: "Creates a POC environment from a template",
-	Long: `Plant creates a POC environment in a FAST foundation sandbox using
+	Long: `Create instantiates a POC environment in a FAST foundation sandbox using
 a seed template (e.g. data-cloud). Example:
 	
-	pasture plant data-cloud --region us-central1 --pasture-size small
+	pasture create data-cloud --region us-central1 --pasture-size small
 	
 A list of seed templates is shown by running:
 	
-	pasture plant --help`,
+	pasture create --help`,
 	Args: cobra.NoArgs,
 	// Run: func(cmd *cobra.Command, args []string) {
 	// 	// always print the help command if invoked without subcommand
@@ -43,33 +43,33 @@ A list of seed templates is shown by running:
 }
 
 func init() {
-	// Add the plant command to the root command
-	RootCmd.AddCommand(plantCmd)
+	// Add the create command to the root command
+	RootCmd.AddCommand(createCmd)
 
 	// Define persistent flags for all seeds
-	plantCmd.PersistentFlags().Bool("skip-foundation", false, "Prevents the Fabric FAST landing zone deployment")
-	plantCmd.PersistentFlags().Bool("dry-run", false, "Displays the desired state of the POC")
-	plantCmd.PersistentFlags().Bool("local-only", false, "Skip migrating state and vars to remote backend")
-	plantCmd.PersistentFlags().BoolP("internal", "G", false, "Internal use only")
+	createCmd.PersistentFlags().Bool("skip-foundation", false, "Prevents the Fabric FAST landing zone deployment")
+	createCmd.PersistentFlags().Bool("dry-run", false, "Displays the desired state of the POC")
+	createCmd.PersistentFlags().Bool("local-only", false, "Skip migrating state and vars to remote backend")
+	createCmd.PersistentFlags().BoolP("internal", "G", false, "Internal use only")
 
 	// Hide these flags
-	if err := plantCmd.PersistentFlags().MarkHidden("skip-foundation"); err != nil {
+	if err := createCmd.PersistentFlags().MarkHidden("skip-foundation"); err != nil {
 		cobra.CheckErr(err)
 	}
 
-	if err := plantCmd.PersistentFlags().MarkHidden("local-only"); err != nil {
+	if err := createCmd.PersistentFlags().MarkHidden("local-only"); err != nil {
 		cobra.CheckErr(err)
 	}
 
-	if err := plantCmd.PersistentFlags().MarkHidden("internal"); err != nil {
+	if err := createCmd.PersistentFlags().MarkHidden("internal"); err != nil {
 		cobra.CheckErr(err)
 	}
 
 	// Load seed command palettes
-	addSeedToPlant()
+	addSeedToCreate()
 }
 
-func addSeedToPlant() {
-	plantCmd.AddCommand(&dataCloud.DataCloudPlant)
-	plantCmd.AddCommand(&foundation.FoundationPlant)
+func addSeedToCreate() {
+	createCmd.AddCommand(&dataCloud.DataCloudCreate)
+	createCmd.AddCommand(&foundation.FoundationCreate)
 }
