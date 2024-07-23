@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/compare/v1.1.0...v1.1.1) (2024-07-23)
+
+
+### Bug Fixes
+
+* Pasture version var not picking up version updates from release-please ([#33](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/issues/33)) ([cd608d0](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/commit/cd608d0f1c303af74b98f1df8727befe6f044129))
+
 ## [1.1.0](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/compare/v1.0.2...v1.1.0) (2024-07-23)
 
 
