@@ -24,7 +24,7 @@ The Pastures Proof of Concept (PoC) utility is used to bootstrap greenfield, pro
 The following bash script can be used to quickly assign these permissions to your account:
 
 > [!NOTE]
-> These prerequisite roles are automatically assigned to the pasture group you supply as a flag to the `plow` subcommand
+> These prerequisite roles are automatically assigned to the pasture group you supply as a flag to the `configure` subcommand
 
 ```shell
 # set variable for current logged in user
@@ -75,21 +75,21 @@ We recommend running this quickstart from a Cloud Shell environment.
 > Ensure that the user running the CLI is a member of your Cloud Identity group e.g. `pasture-group`.
 
 ```shell
-pasture plow --prefix example1 --group-owner pasture-group --domain example.com --billing-account ABCDEF-GHIJKL-MNOPQ
+pasture configure --prefix example1 --group-owner pasture-group --domain example.com --billing-account ABCDEF-GHIJKL-MNOPQ
 ```
 
 2. Create a pasture by indicating which seed template you'd like to deploy (could take ~15 mins to complete):
 
 ```shell
-pasture plant data-cloud --region us-central1 --pasture-size small
+pasture create data-cloud --region us-central1 --pasture-size small
 ```
 
 ## Cleanup
 
-Destruction of a planted pasture is scoped to the seed template. All resources deployed by `pasture` or out of band will be deleted. Currently, `pasture burn` requires the same paramters inputs that were used with the corresponding `pasture plant`:
+Destruction of a pasture is scoped to the seed template. All resources deployed by `pasture` or out of band will be deleted. Currently, `pasture destroy` requires the same paramters inputs that were used with the corresponding `pasture create`:
 
 ```shell
-pasture burn data-cloud --region us-central1 --pasture-size small
+pasture destroy data-cloud --region us-central1 --pasture-size small
 ```
 
 ## Known Issues
@@ -101,7 +101,7 @@ See [Known Issues](docs/known_issues.md).
 Pastures will make every effort to persist environmental state and variable values to a GCS bucket. This supports the ability to run `pasture` from multiple locations, but demands a rehydration step in order to position the dependencies. Rehydration simply requires authorization with Google and the `prefix` originally chosen:
 
 ```shell
-pasture plow --rehydrate --prefix example1
+pasture configure --rehydrate --prefix example1
 ```
 
 Afterwards, you can continue running `pasture` as your normally would.
@@ -110,18 +110,19 @@ Afterwards, you can continue running `pasture` as your normally would.
 
 | Name | Description | Docs | Est. Price Calculator |
 | ---- | ----------- | ---- | --------------------- |
-| `data-cloud` | Landing zone for data, analytics and generative AI | [cmd](docs/pasture_plant_data-cloud.md) | [Small](https://cloud.google.com/products/calculator-legacy#id=5c5c2811-605e-4bdd-94f6-d1c9a19defd5)<br>[Big](https://cloud.google.com/products/calculator-legacy#id=ab352e16-69de-4726-8e91-f1fe0475c3dc) |
+| `data-cloud` | Landing zone for data, analytics and generative AI | [cmd](docs/pasture_create_data-cloud.md) | [Small](https://cloud.google.com/products/calculator-legacy#id=5c5c2811-605e-4bdd-94f6-d1c9a19defd5)<br>[Big](https://cloud.google.com/products/calculator-legacy#id=ab352e16-69de-4726-8e91-f1fe0475c3dc) |
+| `foundation` | Generic landing zone from Fabric FAST foundation stage 0 and stage 1 | [cmd](docs/pasture_create_foundation.md) | N/A |
 
 ## Blueprints
 
 | Name | Seed | Docs |
 | ---- | ---- | ---- |
-| Data Platform | [`data-cloud`](docs/pasture_plant_data-cloud.md) | [Docs](https://github.com/GoogleCloudPlatform/cloud-foundation-fabric/tree/master/blueprints/data-solutions/data-platform-foundations) |
+| Data Platform | [`data-cloud`](docs/pasture_create_data-cloud.md) | [Docs](https://github.com/GoogleCloudPlatform/cloud-foundation-fabric/tree/master/blueprints/data-solutions/data-platform-foundations) |
 
 ## Learn More
 
 - [FAQ](docs/faq.md)
-- [Configure Pasture](docs/pasture_plow.md)
-- [Create a PoC](docs/pasture_plant.md)
-- [Delete a PoC](docs/pasture_burn.md)
+- [Configure Pasture](docs/pasture_configure.md)
+- [Create a PoC](docs/pasture_create.md)
+- [Delete a PoC](docs/pasture_destroy.md)
 - [What is FAST Foundation?](https://github.com/GoogleCloudPlatform/cloud-foundation-fabric/blob/master/fast/README.md)
