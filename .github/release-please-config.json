@@ -4,7 +4,7 @@
         ".": {
             "extra-files": [
                 "README.md",
-                "cmd/plow.go"
+                "cmd/configure.go"
             ]
         }
     }
