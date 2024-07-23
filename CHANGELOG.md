@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.1.0](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/compare/v1.0.2...v1.1.0) (2024-07-23)
+
+
+### Features
+
+* Add Data Fusion instance to data platform ([#25](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/issues/25)) ([acc8fa2](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/commit/acc8fa2793123265f39435eeb1e86233e5a2a0d7))
+* Add version control to seed Terraform modules ([#26](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/issues/26)) ([5225c02](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/commit/5225c02c37af1385f667e180a4cef50958c3acdb))
+* Add version subcommand to print currently installed binary version ([5225c02](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/commit/5225c02c37af1385f667e180a4cef50958c3acdb))
+* Apply prereq roles to pasture group automatically ([#24](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/issues/24)) ([f3abb28](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/commit/f3abb2804719b2607c00654be40a7fb366f66b25))
+* Check for prefix pasture before creating new ([#22](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/issues/22)) ([203dbf7](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/commit/203dbf7f9599cfa511a344e64329ca7764b1e8c3))
+* Disable reservations in restricted environments ([#30](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/issues/30)) ([240099c](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/commit/240099c8b800a7655d39253daf0224fdb2603fe5))
+* Introduce foundation-only deployments ([#28](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/issues/28)) ([85b5669](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/commit/85b56696975fbf47bea0a47743328ba4acd9de8b))
+* Optionally write terraform output to stdout ([#27](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/issues/27)) ([c903010](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/commit/c903010ed9a738c83313159be5aaf04510354c27))
+
+
+### Bug Fixes
+
+* Correct required flags for seed deployment ([85b5669](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/commit/85b56696975fbf47bea0a47743328ba4acd9de8b))
+* Update cli verb nomenclature ([#31](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/issues/31)) ([bf1fc4a](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/commit/bf1fc4a05a1c0f811923adcebae2b4b36f23bfb8))
+
 ## [1.0.2](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/compare/v1.0.1...v1.0.2) (2024-07-18)
 
 
