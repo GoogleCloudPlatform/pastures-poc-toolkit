@@ -32,6 +32,6 @@ Each of the FAST stages' remote state are stored in discrete GCS buckets. The Se
 
 Blueprints are preconditioned resource collections maintained in the Cloud Foundation Fabric [repository](https://github.com/GoogleCloudPlatform/cloud-foundation-fabric/tree/master/blueprints). Take a look at the documentation which covers the essence of Blueprints.
 
-### What all is deleted when I "burn" a pasture?
+### What all is deleted when I destroy a pasture?
 
-`pasture burn` will delete a seed template project, any seed Blueprints deployed, and any manual resources created inside the seed project. Currently, a destroy sequence _will not_ delete a FAST foundation. This is to accommodate future experimentation in a safe-by-default environment, since a foundation is always recommended for enterprise workloads on GCP.
+`pasture destroy` will delete a seed template project, any seed Blueprints deployed, and any manual resources created inside the seed project. Currently, a destroy sequence _will not_ delete a FAST foundation. This is to accommodate future experimentation in a safe-by-default environment, since a foundation is always recommended for enterprise workloads on GCP.

@@ -1,0 +1,34 @@
+## pasture destroy
+
+Removes the POC resources created by a seed.
+
+### Synopsis
+
+Removes the POC resources created by a seed in a previous
+run of the plant command. Example:
+
+	pasture destroy data-cloud --jumpstart data-warehouse
+	
+A list of seed templates is shown by running:
+	
+	pasture destroy --help
+
+### Options
+
+```
+      --dry-run   Displays the desired state of the POC
+  -h, --help      help for destroy
+```
+
+### Options inherited from parent commands
+
+```
+      --config string   config file (default is $HOME/.pastures.yaml)
+      --verbose         controls Terraform output verbosity (default "false")
+```
+
+### SEE ALSO
+
+* [pasture](pasture.md)	 - A POC toolkit for Google Cloud
+* [pasture destroy data-cloud](pasture_destroy_data-cloud.md)	 - Deploy a Data Cloud pasture with blueprints
+* [pasture destroy foundation](pasture_destroy_foundation.md)	 - Deploy a foundation-only pasture with no blueprints

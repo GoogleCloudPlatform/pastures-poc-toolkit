@@ -32,8 +32,8 @@ var (
 
 // Set up pointers to support multiple distinct parents
 var (
-	FoundationPlant = *FoundationCmd
-	FoundationBurn  = *FoundationCmd
+	FoundationCreate  = *FoundationCmd
+	FoundationDestroy = *FoundationCmd
 )
 
 // FoundationCmd represents the foundation command
@@ -44,7 +44,7 @@ var FoundationCmd = &cobra.Command{
 Projects can optionally be deployed as features into the landing zone. An
 example of how to use this pasture:
 	
-	pasture plant foundation`,
+	pasture create foundation`,
 	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Construct path for the config
@@ -68,7 +68,7 @@ example of how to use this pasture:
 		varData := fabric.NewFastConfig()
 
 		if err := varData.ReadConfig(varFile.LocalPath); err != nil {
-			fmt.Println("Unable to read var file. Try running pasture plow --rehydrate")
+			fmt.Println("Unable to read var file. Try running pasture configure --rehydrate")
 			cobra.CheckErr(err)
 		}
 
@@ -82,8 +82,8 @@ example of how to use this pasture:
 		for _, s := range stages {
 			var firstRun bool = false
 
-			// burn not supported for foundation stage
-			if cmd.Parent().Name() == "burn" && s.Type == "foundation" {
+			// destroy not supported for foundation stage
+			if cmd.Parent().Name() == "destroy" && s.Type == "foundation" {
 				fmt.Println("Skipping foundation stage:", s.Name)
 				continue
 			}
@@ -107,7 +107,7 @@ example of how to use this pasture:
 			}
 
 			// do what we came here to do
-			if cmd.Parent().Name() == "burn" {
+			if cmd.Parent().Name() == "destroy" {
 				fmt.Println("Destroying stage:", s.Name)
 			} else {
 				fmt.Println("Deploying stage:", s.Name)
@@ -128,7 +128,7 @@ example of how to use this pasture:
 
 			fmt.Println("Configuration complete")
 
-			if cmd.Parent().Name() == "burn" {
+			if cmd.Parent().Name() == "destroy" {
 				// destroy the stage
 				fmt.Println("Starting destroy:", s.Name)
 				if err := s.Destroy(nil, verbose); err != nil {

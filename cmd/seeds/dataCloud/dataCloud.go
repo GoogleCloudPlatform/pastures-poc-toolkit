@@ -38,8 +38,8 @@ var (
 
 // Set up pointers to support multiple distinct parents
 var (
-	DataCloudPlant = *DataCloudCmd
-	DataCloudBurn  = *DataCloudCmd
+	DataCloudCreate  = *DataCloudCmd
+	DataCloudDestroy = *DataCloudCmd
 )
 
 // DataCloudCmd represents the dataCloud command
@@ -50,7 +50,7 @@ var DataCloudCmd = &cobra.Command{
 Blueprints are deployed as features into the landing zone. An
 example of how to use this pasture:
 	
-	pasture plant data-cloud --region us-central1 --pasture-size small`,
+	pasture create data-cloud --region us-central1 --pasture-size small`,
 	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Construct path for the config
@@ -76,7 +76,7 @@ example of how to use this pasture:
 		varData := fabric.NewFastConfig()
 
 		if err := varData.ReadConfig(varFile.LocalPath); err != nil {
-			fmt.Println("Unable to read var file. Try running pasture plow --rehydrate")
+			fmt.Println("Unable to read var file. Try running pasture configure --rehydrate")
 			cobra.CheckErr(err)
 		}
 
@@ -100,8 +100,8 @@ example of how to use this pasture:
 
 			seedVars := make([]*terraform.Vars, 0)
 
-			// burn not supported for foundation stage
-			if cmd.Parent().Name() == "burn" && s.Type == "foundation" {
+			// destroy not supported for foundation stage
+			if cmd.Parent().Name() == "destroy" && s.Type == "foundation" {
 				fmt.Println("Skipping foundation stage:", s.Name)
 				continue
 			}
@@ -143,7 +143,7 @@ example of how to use this pasture:
 			}
 
 			// do what we came here to do
-			if cmd.Parent().Name() == "burn" {
+			if cmd.Parent().Name() == "destroy" {
 				fmt.Println("Destroying stage:", s.Name)
 			} else {
 				fmt.Println("Deploying stage:", s.Name)
@@ -164,7 +164,7 @@ example of how to use this pasture:
 
 			fmt.Println("Configuration complete")
 
-			if cmd.Parent().Name() == "burn" {
+			if cmd.Parent().Name() == "destroy" {
 				// destroy the stage
 				fmt.Println("Starting destroy:", s.Name)
 				if err := s.Destroy(seedVars, verbose); err != nil {
@@ -211,7 +211,7 @@ example of how to use this pasture:
 
 			fmt.Println("Stage complete:", s.Name)
 
-			if s.Type == "seed" && cmd.Parent().Name() == "plant" {
+			if s.Type == "seed" && cmd.Parent().Name() == "create" {
 				ep, err := terraform.TfOutput(s.Path, "datafusion_endpoint", verbose)
 
 				if err != nil {
@@ -226,19 +226,19 @@ example of how to use this pasture:
 
 func init() {
 	// Define and add flags for the seed
-	DataCloudPlant.Flags().StringVarP(&region, "region", "r", "us-central1", "Region for GCP resources to be deployed")
-	DataCloudPlant.Flags().StringVarP(&size, "pasture-size", "s", "", "Size of pasture environment - must be 'big' or 'small'")
+	DataCloudCreate.Flags().StringVarP(&region, "region", "r", "us-central1", "Region for GCP resources to be deployed")
+	DataCloudCreate.Flags().StringVarP(&size, "pasture-size", "s", "", "Size of pasture environment - must be 'big' or 'small'")
 
 	// TODO: is there a better way to do this in Cobra?
-	DataCloudBurn.Flags().StringVarP(&region, "region", "r", "us-central1", "Region for GCP resources to be deployed")
-	DataCloudBurn.Flags().StringVarP(&size, "pasture-size", "s", "", "Size of pasture environment - must be 'big' or 'small'")
+	DataCloudDestroy.Flags().StringVarP(&region, "region", "r", "us-central1", "Region for GCP resources to be deployed")
+	DataCloudDestroy.Flags().StringVarP(&size, "pasture-size", "s", "", "Size of pasture environment - must be 'big' or 'small'")
 
 	// Required flags
-	if err := DataCloudPlant.MarkFlagRequired("region"); err != nil {
+	if err := DataCloudCreate.MarkFlagRequired("region"); err != nil {
 		cobra.CheckErr(err)
 	}
 
-	if err := DataCloudBurn.MarkFlagRequired("pasture-size"); err != nil {
+	if err := DataCloudDestroy.MarkFlagRequired("pasture-size"); err != nil {
 		cobra.CheckErr(err)
 	}
 }

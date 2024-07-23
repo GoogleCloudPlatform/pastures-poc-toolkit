@@ -78,9 +78,9 @@ var (
 	}
 )
 
-// plowCmd represents the plow command
-var plowCmd = &cobra.Command{
-	Use:   "plow",
+// configureCmd represents the configure command
+var configureCmd = &cobra.Command{
+	Use:   "configure",
 	Short: "Initializes environment configuration",
 	Long: "This command will create an environment and define its " +
 		"properties in a pasture configuration file, which is " +
@@ -136,7 +136,7 @@ var plowCmd = &cobra.Command{
 			fmt.Println("Building a new configuration file")
 
 			if err := vars.GetFileMetadata(); err == nil {
-				err := fmt.Errorf("existing pasture for prefix %s found - try running plow with --rehydrate flag", prefix)
+				err := fmt.Errorf("existing pasture for prefix %s found - try running configure with --rehydrate flag", prefix)
 				cobra.CheckErr(err)
 			}
 
@@ -276,57 +276,57 @@ var plowCmd = &cobra.Command{
 			// }
 		}
 
-		fmt.Println("\nPasture plow complete! configuration hydrated...")
+		fmt.Println("\nPasture configure complete! configuration hydrated...")
 	},
 }
 
 func init() {
-	// Add the plow command to the root command
-	RootCmd.AddCommand(plowCmd)
+	// Add the configure command to the root command
+	RootCmd.AddCommand(configureCmd)
 
-	// Define and add flags for the plow command
-	plowCmd.Flags().StringVarP(&orgDomain, "domain", "d", "", "GCP organization domain name")
-	plowCmd.Flags().StringVarP(&billingAccountId, "billing-account", "b", "", "GCP billing account ID")
-	plowCmd.Flags().StringVarP(&location, "location", "l", "US", "GCP multi-region location code")
-	plowCmd.Flags().StringVar(&fabricVer, "fabric-version", "v29.0.0", "Cloud Foundation Fabric FAST version")
-	plowCmd.Flags().BoolVarP(&isInternal, "internal", "G", false, "Internal use only")
-	plowCmd.Flags().StringVarP(&prefix, "prefix", "p", "", "Prefix for resources with unique names (max 9 characters)")
-	plowCmd.Flags().StringVarP(&group, "group-owner", "g", "", "Name of Cloud Identity group that owns the pastures")
-	plowCmd.Flags().StringVar(&orgAdminSa, "org-admin-sa", "", "Service account email of the internal environment administrator")
-	plowCmd.Flags().BoolVar(&rehydrate, "rehydrate", false, "Restore previous Pastures configuration from saved version in GCS bucket")
-	plowCmd.Flags().StringVar(&seedVer, "seed-version", pastureVer, "Version of pasture seed terraform modules to use")
-	plowCmd.Flags().BoolVar(&skipSeed, "skip-seed", false, "Limits deployment to FAST foundation only")
+	// Define and add flags for the configure command
+	configureCmd.Flags().StringVarP(&orgDomain, "domain", "d", "", "GCP organization domain name")
+	configureCmd.Flags().StringVarP(&billingAccountId, "billing-account", "b", "", "GCP billing account ID")
+	configureCmd.Flags().StringVarP(&location, "location", "l", "US", "GCP multi-region location code")
+	configureCmd.Flags().StringVar(&fabricVer, "fabric-version", "v29.0.0", "Cloud Foundation Fabric FAST version")
+	configureCmd.Flags().BoolVarP(&isInternal, "internal", "G", false, "Internal use only")
+	configureCmd.Flags().StringVarP(&prefix, "prefix", "p", "", "Prefix for resources with unique names (max 9 characters)")
+	configureCmd.Flags().StringVarP(&group, "group-owner", "g", "", "Name of Cloud Identity group that owns the pastures")
+	configureCmd.Flags().StringVar(&orgAdminSa, "org-admin-sa", "", "Service account email of the internal environment administrator")
+	configureCmd.Flags().BoolVar(&rehydrate, "rehydrate", false, "Restore previous Pastures configuration from saved version in GCS bucket")
+	configureCmd.Flags().StringVar(&seedVer, "seed-version", pastureVer, "Version of pasture seed terraform modules to use")
+	configureCmd.Flags().BoolVar(&skipSeed, "skip-seed", false, "Limits deployment to FAST foundation only")
 
 	// One of these flags is required
-	plowCmd.MarkFlagsOneRequired("domain", "rehydrate")
-	plowCmd.MarkFlagsMutuallyExclusive("domain", "rehydrate")
+	configureCmd.MarkFlagsOneRequired("domain", "rehydrate")
+	configureCmd.MarkFlagsMutuallyExclusive("domain", "rehydrate")
 
 	// New config flag group
-	plowCmd.MarkFlagsRequiredTogether("domain", "billing-account", "group-owner")
+	configureCmd.MarkFlagsRequiredTogether("domain", "billing-account", "group-owner")
 
 	// Internal environment flag group
-	plowCmd.MarkFlagsRequiredTogether("internal", "org-admin-sa")
-	plowCmd.MarkFlagsMutuallyExclusive("rehydrate", "internal")
+	configureCmd.MarkFlagsRequiredTogether("internal", "org-admin-sa")
+	configureCmd.MarkFlagsMutuallyExclusive("rehydrate", "internal")
 
 	// These flags are always required
-	if err := plowCmd.MarkFlagRequired("prefix"); err != nil {
+	if err := configureCmd.MarkFlagRequired("prefix"); err != nil {
 		cobra.CheckErr(err)
 	}
 
 	// Hide the internal flags
-	if err := plowCmd.Flags().MarkHidden("internal"); err != nil {
+	if err := configureCmd.Flags().MarkHidden("internal"); err != nil {
 		cobra.CheckErr(err)
 	}
 
-	if err := plowCmd.Flags().MarkHidden("org-admin-sa"); err != nil {
+	if err := configureCmd.Flags().MarkHidden("org-admin-sa"); err != nil {
 		cobra.CheckErr(err)
 	}
 
-	if err := plowCmd.Flags().MarkHidden("skip-seed"); err != nil {
+	if err := configureCmd.Flags().MarkHidden("skip-seed"); err != nil {
 		cobra.CheckErr(err)
 	}
 
-	// if err := plowCmd.Flags().MarkHidden("fabric-version"); err != nil {
+	// if err := configureCmd.Flags().MarkHidden("fabric-version"); err != nil {
 	// 	cobra.CheckErr(err)
 	// }
 }

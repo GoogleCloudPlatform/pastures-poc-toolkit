@@ -22,18 +22,18 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// burnCmd represents the burn command
-var burnCmd = &cobra.Command{
-	Use:   "burn SEED",
+// destroyCmd represents the destroy command
+var destroyCmd = &cobra.Command{
+	Use:   "destroy SEED",
 	Short: "Removes the POC resources created by a seed.",
 	Long: `Removes the POC resources created by a seed in a previous
 run of the plant command. Example:
 
-	pasture burn data-cloud --jumpstart data-warehouse
+	pasture destroy data-cloud --jumpstart data-warehouse
 	
 A list of seed templates is shown by running:
 	
-	pasture burn --help`,
+	pasture destroy --help`,
 	Args: cobra.ExactArgs(1),
 	// Run: func(cmd *cobra.Command, args []string) {
 	// 	// always print the help command if invoked without subcommand
@@ -43,32 +43,32 @@ A list of seed templates is shown by running:
 }
 
 func init() {
-	RootCmd.AddCommand(burnCmd)
+	RootCmd.AddCommand(destroyCmd)
 
 	// Define persistent flags for all seeds
-	burnCmd.PersistentFlags().Bool("skip-foundation", false, "Prevents the Fabric FAST landing zone deployment")
-	burnCmd.PersistentFlags().Bool("dry-run", false, "Displays the desired state of the POC")
-	burnCmd.PersistentFlags().Bool("local-only", false, "Skip migrating state and vars to remote backend")
-	burnCmd.PersistentFlags().BoolP("internal", "G", false, "Internal use only")
+	destroyCmd.PersistentFlags().Bool("skip-foundation", false, "Prevents the Fabric FAST landing zone deployment")
+	destroyCmd.PersistentFlags().Bool("dry-run", false, "Displays the desired state of the POC")
+	destroyCmd.PersistentFlags().Bool("local-only", false, "Skip migrating state and vars to remote backend")
+	destroyCmd.PersistentFlags().BoolP("internal", "G", false, "Internal use only")
 
 	// Hide these flags
-	if err := burnCmd.PersistentFlags().MarkHidden("skip-foundation"); err != nil {
+	if err := destroyCmd.PersistentFlags().MarkHidden("skip-foundation"); err != nil {
 		cobra.CheckErr(err)
 	}
 
-	if err := burnCmd.PersistentFlags().MarkHidden("local-only"); err != nil {
+	if err := destroyCmd.PersistentFlags().MarkHidden("local-only"); err != nil {
 		cobra.CheckErr(err)
 	}
 
-	if err := burnCmd.PersistentFlags().MarkHidden("internal"); err != nil {
+	if err := destroyCmd.PersistentFlags().MarkHidden("internal"); err != nil {
 		cobra.CheckErr(err)
 	}
 
 	// Load seed command palettes
-	addSeedToBurn()
+	addSeedToDestroy()
 }
 
-func addSeedToBurn() {
-	burnCmd.AddCommand(&dataCloud.DataCloudBurn)
-	burnCmd.AddCommand(&foundation.FoundationBurn)
+func addSeedToDestroy() {
+	destroyCmd.AddCommand(&dataCloud.DataCloudDestroy)
+	destroyCmd.AddCommand(&foundation.FoundationDestroy)
 }
