@@ -20,5 +20,5 @@ data "google_active_folder" "sandbox" {
 }
 
 data "google_compute_networks" "load" {
-  project = module.data-platform.projects.load
+  project = module.data-platform.projects.project_id.load
 }
