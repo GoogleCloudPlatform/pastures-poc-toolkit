@@ -55,7 +55,7 @@ We recommend running `pasture` from a Cloud Shell environment. If you choose to 
 Install the binary to your `$PATH` of choice. `amd64` is currently the only supported build architecture.
 <!-- x-release-please-start-version -->
 ```shell
-sudo wget https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/releases/download/v1.1.1/pastures_amd64.tar.gz -O - \
+sudo wget https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/releases/download/v1.1.2/pastures_amd64.tar.gz -O - \
 | sudo tar -zxf - -C /usr/local/bin
 
 sudo chmod +x /usr/local/bin/pasture
