@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.2](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/compare/v1.1.1...v1.1.2) (2024-07-24)
+
+
+### Bug Fixes
+
+* Correct invalid interpolation reference to load project ([#36](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/issues/36)) ([0548485](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/commit/0548485ec0aaef51e82988037a116dae54befa5f))
+* Update fast version to `v32.0.0` ([0548485](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/commit/0548485ec0aaef51e82988037a116dae54befa5f))
+
 ## [1.1.1](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/compare/v1.1.0...v1.1.1) (2024-07-23)
 
 
