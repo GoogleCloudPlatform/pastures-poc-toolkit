@@ -288,7 +288,7 @@ func init() {
 	configureCmd.Flags().StringVarP(&orgDomain, "domain", "d", "", "GCP organization domain name")
 	configureCmd.Flags().StringVarP(&billingAccountId, "billing-account", "b", "", "GCP billing account ID")
 	configureCmd.Flags().StringVarP(&location, "location", "l", "US", "GCP multi-region location code")
-	configureCmd.Flags().StringVar(&fabricVer, "fabric-version", "v29.0.0", "Cloud Foundation Fabric FAST version")
+	configureCmd.Flags().StringVar(&fabricVer, "fabric-version", "v32.0.0", "Cloud Foundation Fabric FAST version")
 	configureCmd.Flags().BoolVarP(&isInternal, "internal", "G", false, "Internal use only")
 	configureCmd.Flags().StringVarP(&prefix, "prefix", "p", "", "Prefix for resources with unique names (max 9 characters)")
 	configureCmd.Flags().StringVarP(&group, "group-owner", "g", "", "Name of Cloud Identity group that owns the pastures")
