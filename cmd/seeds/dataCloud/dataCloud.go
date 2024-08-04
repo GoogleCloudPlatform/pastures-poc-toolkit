@@ -49,19 +49,19 @@ var DataCloudCmd = &cobra.Command{
 	Long: `Creates a data-cloud landing zone in a FAST foundation sandbox.
 Blueprints are deployed as features into the landing zone. An
 example of how to use this pasture:
-	
+
 	pasture create data-cloud --region us-central1 --pasture-size small`,
 	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		// Construct path for the config
-		p, err := utils.ConfigPath()
-		if err != nil {
-			fmt.Println("Unable to set configuration path")
+		// Check if Google ADC is valid
+		if _, err := google.AppDefaultCredentials(); err != nil {
 			cobra.CheckErr(err)
 		}
 
-		// Check if Google ADC is valid
-		if _, err := google.AppDefaultCredentials(); err != nil {
+		// Construct path for the config
+		configPath, err := utils.ConfigPath()
+		if err != nil {
+			fmt.Println("Unable to set configuration path")
 			cobra.CheckErr(err)
 		}
 
@@ -71,24 +71,15 @@ example of how to use this pasture:
 		verbose, _ = cmd.Flags().GetBool("verbose")
 		isInternal, _ = cmd.Flags().GetBool("internal")
 
-		// Hydrate configuration
-		varFile := fabric.LoadVarsFile(p, "")
-		varData := fabric.NewFastConfig()
-
-		if err := varData.ReadConfig(varFile.LocalPath); err != nil {
-			fmt.Println("Unable to read var file. Try running pasture configure --rehydrate")
-			cobra.CheckErr(err)
-		}
-
-		varFile.AddConfig(varData)
-		varFile.SetBucket(varData.Prefix) // TODO: this can be optimized by splitting deps and stage vars
+		// Hydrate the configuration
+		varFile, varData := hydrateConfig(configPath)
 
 		// Load foundation stages
-		stages := fabric.InitializeStages(p, varData.Prefix, varFile)
+		stages := fabric.InitializeStages(configPath, varData.Prefix, varFile)
 
 		// Seed stage
-		seed := fabric.NewSeedStage(p)
-		seed.HydrateSeed(cmd.Use, varData.Prefix, p)
+		seed := fabric.NewSeedStage(configPath)
+		seed.HydrateSeed(cmd.Use, varData.Prefix, configPath)
 		seed.AddVarFile(varFile)
 
 		// All at once
@@ -222,6 +213,21 @@ example of how to use this pasture:
 			}
 		}
 	},
+}
+
+func hydrateConfig(configPath string) (*fabric.VarsFile, *fabric.FastConfig) {
+	varsFile := fabric.LoadVarsFile(configPath, "")
+	varData := fabric.NewFastConfig()
+
+	if err := varData.ReadConfig(varsFile.LocalPath); err != nil {
+		fmt.Println("Unable to read var file. Try running pasture configure --rehydrate")
+		cobra.CheckErr(err)
+	}
+
+	varsFile.AddConfig(varData)
+	varsFile.SetBucket(varData.Prefix) // TODO: this can be optimized by splitting deps and stage vars
+
+	return varsFile, varData
 }
 
 func init() {
