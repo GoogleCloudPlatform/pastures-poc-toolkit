@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/compare/v1.1.2...v1.1.3) (2024-08-07)
+
+
+### Bug Fixes
+
+* Increase BQ slots for large form factor `data-cloud` ([#39](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/issues/39)) ([63bba34](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/commit/63bba347c017c3a7b0d757bccfe1e7434b5e6adb))
+
 ## [1.1.2](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/compare/v1.1.1...v1.1.2) (2024-07-24)
 
 
