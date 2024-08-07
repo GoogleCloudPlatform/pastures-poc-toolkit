@@ -22,7 +22,7 @@ locals {
       edition = "BASIC"
     }
     "large" = {
-      slots   = 200
+      slots   = 400
       ram     = 32
       edition = "ENTERPRISE"
     }
