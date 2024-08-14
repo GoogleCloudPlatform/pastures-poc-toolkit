@@ -41,7 +41,11 @@ var (
 	resmanVars = []string{"0-globals", "0-bootstrap"}
 )
 
-func InitializeStages(configPath string, prefix string, vars ...*VarsFile) []*Stage {
+func InitializeFoundationStages(
+	configPath string,
+	prefix string,
+	vars ...*VarsFile,
+) []*Stage {
 	stages := make([]*Stage, 0)
 	deps := make([]*VarsFile, 0)
 
@@ -49,7 +53,10 @@ func InitializeStages(configPath string, prefix string, vars ...*VarsFile) []*St
 
 		if s == "1-resman" {
 			for _, r := range resmanVars {
-				deps = append(deps, resmanDependencies(r, s, prefix, configPath))
+				deps = append(
+					deps,
+					resmanDependencies(r, s, prefix, configPath),
+				)
 			}
 		} else {
 			deps = vars
@@ -64,12 +71,16 @@ func InitializeStages(configPath string, prefix string, vars ...*VarsFile) []*St
 		)
 
 		stages = append(stages, &Stage{
-			Name:         s,
-			Type:         "foundation",
-			Path:         filepath.Join(configPath, foundationDir, s),
-			Repository:   repo,
-			ProviderFile: NewProviderFile(s, prefix, filepath.Join(configPath, foundationDir)),
-			StageVars:    deps,
+			Name:       s,
+			Type:       "foundation",
+			Path:       filepath.Join(configPath, foundationDir, s),
+			Repository: repo,
+			ProviderFile: NewProviderFile(
+				s,
+				prefix,
+				filepath.Join(configPath, foundationDir),
+			),
+			StageVars: deps,
 		})
 	}
 
@@ -94,7 +105,11 @@ func NewSeedStage(configPath string) *Stage {
 func (s *Stage) HydrateSeed(name string, prefix string, configPath string) {
 	s.Name = name
 	s.Path = filepath.Join(configPath, seedDir, name)
-	s.ProviderFile = NewProviderFile(name, prefix, filepath.Join(configPath, seedDir))
+	s.ProviderFile = NewProviderFile(
+		name,
+		prefix,
+		filepath.Join(configPath, seedDir),
+	)
 }
 
 func (s *Stage) AddVarFile(file *VarsFile) {

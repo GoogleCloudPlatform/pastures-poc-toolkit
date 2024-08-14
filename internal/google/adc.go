@@ -25,9 +25,9 @@ import (
 	"os/exec"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/internal/utils"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/lestrrat-go/jwx/jwk"
-	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/internal/utils"
 	"golang.org/x/oauth2/google"
 )
 
@@ -72,7 +72,8 @@ func findToken(jsonPath string) (string, error) {
 		return "", errors.New("unable to fetch signing keys from google")
 	}
 
-	// Assuming rawToken is of a type that has an Extra method returning an interface{}
+	// Assuming rawToken is of a type that has an Extra method
+	// returning an interface{}
 	idTokenInterface := rawToken.Extra("id_token")
 	if idTokenInterface == nil {
 		// Handle the error: id_token is missing or nil
@@ -87,24 +88,30 @@ func findToken(jsonPath string) (string, error) {
 	}
 
 	// parse the token
-	jwt.ParseWithClaims(idToken, &userClaim, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
-			return "", errors.New("unexpected token signature method")
-		}
+	jwt.ParseWithClaims(
+		idToken,
+		&userClaim,
+		func(token *jwt.Token) (interface{}, error) {
+			if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
+				return "", errors.New("unexpected token signature method")
+			}
 
-		kid, ok := token.Header["kid"].(string)
-		if !ok {
-			return "", errors.New("could not find key id in token header")
-		}
+			kid, ok := token.Header["kid"].(string)
+			if !ok {
+				return "", errors.New("could not find key id in token header")
+			}
 
-		keys, ok := fetchedKeys.LookupKeyID(kid)
-		if !ok {
-			return "", errors.New("no keys found matching key id in token header")
-		}
+			keys, ok := fetchedKeys.LookupKeyID(kid)
+			if !ok {
+				return "", errors.New(
+					"no keys found matching key id in token header",
+				)
+			}
 
-		var empty interface{}
-		return empty, keys.Raw(&empty)
-	})
+			var empty interface{}
+			return empty, keys.Raw(&empty)
+		},
+	)
 
 	return userClaim.Email, nil
 }

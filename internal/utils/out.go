@@ -22,11 +22,13 @@ import (
 	"time"
 )
 
-func ProgressTicker(s string, wg *sync.WaitGroup, ch <-chan bool) {
+func ProgressTicker(headline string, wg *sync.WaitGroup, ch <-chan bool) {
 	wg.Add(1)
 	defer wg.Done()
 
-	ticker := time.NewTicker(5 * time.Second) // TODO: this falsely lengthens then wait block by 5 seconds minimum
+	ticker := time.NewTicker(
+		5 * time.Second,
+	) // TODO: this falsely lengthens then wait block by 5 seconds minimum
 	defer ticker.Stop()
 
 	startTime := time.Now()
@@ -41,9 +43,18 @@ func ProgressTicker(s string, wg *sync.WaitGroup, ch <-chan bool) {
 			seconds := int(elapsed.Seconds()) - minutes*60
 
 			if minutes == 0 {
-				fmt.Printf("Still working on %s for %d seconds\n", s, seconds)
+				fmt.Printf(
+					"Still working on %s for %d seconds\n",
+					headline,
+					seconds,
+				)
 			} else {
-				fmt.Printf("Still working on %s for %d minutes and %d seconds\n", s, minutes, seconds)
+				fmt.Printf(
+					"Still working on %s for %d minutes and %d seconds\n",
+					headline,
+					minutes,
+					seconds,
+				)
 			}
 		}
 	}

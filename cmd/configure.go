@@ -68,8 +68,9 @@ var (
 	// patch FAST not making these unique with prefixes
 	logSinks = fabric.LogSinks{
 		"audit-logs": fabric.LogSink{
-			"filter": "logName:\"/logs/cloudaudit.googleapis.com%2Factivity\" OR logName:\"/logs/cloudaudit.googleapis.com%2Fsystem_event\"",
-			"type":   "logging",
+			"filter": "logName:\"/logs/cloudaudit.googleapis.com%2Factivity\"" +
+				" OR logName:\"/logs/cloudaudit.googleapis.com%2Fsystem_event\"",
+			"type": "logging",
 		},
 		"vpc-sc": fabric.LogSink{
 			"filter": "protoPayload.metadata.@type=\"type.googleapis.com/google.cloud.audit.VpcServiceControlAuditMetadata\"",
@@ -113,7 +114,8 @@ var configureCmd = &cobra.Command{
 		// Create a new variable file instance
 		vars := fabric.LoadVarsFile(path, prefix)
 
-		// TODO: if requested, print the foundations directory path (to be enhanced with harvest feature)
+		// TODO: if requested, print the foundations directory path
+		// (to be enhanced with harvest feature)
 
 		// Authorize with Google and get current user
 		email, err := google.AppDefaultCredentials()
@@ -136,7 +138,10 @@ var configureCmd = &cobra.Command{
 			fmt.Println("Building a new configuration file")
 
 			if err := vars.GetFileMetadata(); err == nil {
-				err := fmt.Errorf("existing pasture for prefix %s found - try running configure with --rehydrate flag", prefix)
+				err := fmt.Errorf(
+					"existing pasture for prefix %s found - "+
+						"try running configure with --rehydrate flag", prefix,
+				)
 				cobra.CheckErr(err)
 			}
 
@@ -170,14 +175,17 @@ var configureCmd = &cobra.Command{
 				var adds []*fabric.IamAdditive
 
 				for _, r := range gIamRoles { // Authoritative bindings
-					err := fastConfig.AddIamBinding(r, []string{"serviceAccount:" + orgAdminSa})
+					err := fastConfig.AddIamBinding(
+						r, []string{"serviceAccount:" + orgAdminSa},
+					)
 
 					if err != nil {
 						cobra.CheckErr(err)
 					}
 				}
 
-				for _, r := range gIamAdditiveRoles { // Nonauthoritative bindings
+				// Nonauthoritative bindings
+				for _, r := range gIamAdditiveRoles {
 					adds = append(adds, &fabric.IamAdditive{
 						Role:   r,
 						Member: "serviceAccount:" + orgAdminSa,
@@ -190,18 +198,25 @@ var configureCmd = &cobra.Command{
 				}
 
 				// Customize log sinks
-				fastConfig.SetLogSinks(prefix, logSinks) // TODO: refactor to simple slice and iterate in method
+				// TODO: refactor to simple slice and iterate in method
+				fastConfig.SetLogSinks(prefix, logSinks)
 			}
 
 			fmt.Println("Applying prerequisite roles to group:", group)
 
-			if err := google.SetRequiredOrgIAMRoles(fastConfig.Organization, group, groupIamRoles); err != nil {
+			if err := google.SetRequiredOrgIAMRoles(
+				fastConfig.Organization,
+				group,
+				groupIamRoles,
+			); err != nil {
 				fmt.Println("Unable to apply prerequisite roles to group:", group)
 				cobra.CheckErr(err)
 			}
 
 			fmt.Println("Waiting for role assignment propagation")
-			time.Sleep(10 * time.Second) // TODO: 10 seconds may or may not be enough for propagation
+
+			// TODO: 10 seconds may or may not be enough for propagation
+			time.Sleep(10 * time.Second)
 
 			// Write the tfvars file
 			fmt.Println("Writing configuration file to path:", vars.LocalPath)
@@ -215,7 +230,7 @@ var configureCmd = &cobra.Command{
 		}
 
 		// Init FAST stages
-		stages := fabric.InitializeStages(path, prefix, vars)
+		stages := fabric.InitializeFoundationStages(path, prefix, vars)
 
 		// Create seed stage shell and append to foundations
 		if !skipSeed {
@@ -232,7 +247,11 @@ var configureCmd = &cobra.Command{
 					s.Repository.SetRef("refs/tags/" + fabricVer)
 				}
 			} else if s.Type == "seed" {
-				fmt.Printf("Using %s tag for the Pasture seed %s \n", seedVer, s.Name) // TODO: we don't have a seed name here; just a shell
+				// TODO: we don't have a seed name here; just a shell
+				fmt.Printf(
+					"Using %s tag for the Pasture seed %s \n",
+					seedVer, s.Name,
+				)
 				s.Repository.SetRef("refs/tags/" + seedVer)
 			}
 
@@ -259,6 +278,9 @@ var configureCmd = &cobra.Command{
 				}
 			}
 
+			//TODO Delete these unused stanzas?
+
+			// ****
 			// download providers file if rehydrating
 			// if rehydrate {
 			// 	fmt.Println("Sourcing provider file from GCS bucket for stage:", s.Name)
@@ -274,6 +296,7 @@ var configureCmd = &cobra.Command{
 			// 	fmt.Printf("Unable to intialize FAST stage: %s", s.Name)
 			// 	cobra.CheckErr(err)
 			// }
+			// ****
 		}
 
 		fmt.Println("\nPasture configure complete! configuration hydrated...")
@@ -285,24 +308,84 @@ func init() {
 	RootCmd.AddCommand(configureCmd)
 
 	// Define and add flags for the configure command
-	configureCmd.Flags().StringVarP(&orgDomain, "domain", "d", "", "GCP organization domain name")
-	configureCmd.Flags().StringVarP(&billingAccountId, "billing-account", "b", "", "GCP billing account ID")
-	configureCmd.Flags().StringVarP(&location, "location", "l", "US", "GCP multi-region location code")
-	configureCmd.Flags().StringVar(&fabricVer, "fabric-version", "v32.0.0", "Cloud Foundation Fabric FAST version")
-	configureCmd.Flags().BoolVarP(&isInternal, "internal", "G", false, "Internal use only")
-	configureCmd.Flags().StringVarP(&prefix, "prefix", "p", "", "Prefix for resources with unique names (max 9 characters)")
-	configureCmd.Flags().StringVarP(&group, "group-owner", "g", "", "Name of Cloud Identity group that owns the pastures")
-	configureCmd.Flags().StringVar(&orgAdminSa, "org-admin-sa", "", "Service account email of the internal environment administrator")
-	configureCmd.Flags().BoolVar(&rehydrate, "rehydrate", false, "Restore previous Pastures configuration from saved version in GCS bucket")
-	configureCmd.Flags().StringVar(&seedVer, "seed-version", pastureVer, "Version of pasture seed terraform modules to use")
-	configureCmd.Flags().BoolVar(&skipSeed, "skip-seed", false, "Limits deployment to FAST foundation only")
+	configureCmd.Flags().
+		StringVarP(
+			&orgDomain,
+			"domain", "d", "", "GCP organization domain name",
+		)
+
+	configureCmd.Flags().
+		StringVarP(
+			&billingAccountId,
+			"billing-account", "b", "", "GCP billing account ID",
+		)
+
+	configureCmd.Flags().
+		StringVarP(
+			&location,
+			"location", "l", "US", "GCP multi-region location code",
+		)
+
+	configureCmd.Flags().
+		StringVar(
+			&fabricVer,
+			"fabric-version", "v32.0.0", "Cloud Foundation Fabric FAST version",
+		)
+
+	configureCmd.Flags().
+		BoolVarP(
+			&isInternal,
+			"internal", "G", false, "Internal use only",
+		)
+
+	configureCmd.Flags().
+		StringVarP(
+			&prefix,
+			"prefix", "p", "",
+			"Prefix for resources with unique names (max 9 characters)",
+		)
+
+	configureCmd.Flags().
+		StringVarP(
+			&group,
+			"group-owner", "g", "",
+			"Name of Cloud Identity group that owns the pastures",
+		)
+
+	configureCmd.Flags().
+		StringVar(
+			&orgAdminSa,
+			"org-admin-sa", "",
+			"Service account email of the internal environment administrator",
+		)
+
+	configureCmd.Flags().
+		BoolVar(
+			&rehydrate, "rehydrate", false,
+			"Restore previous Pastures configuration saved in GCS bucket",
+		)
+
+	configureCmd.Flags().
+		StringVar(
+			&seedVer, "seed-version", pastureVer,
+			"Version of pasture seed terraform modules to use",
+		)
+	configureCmd.Flags().
+		BoolVar(
+			&skipSeed, "skip-seed", false,
+			"Limits deployment to FAST foundation only",
+		)
 
 	// One of these flags is required
 	configureCmd.MarkFlagsOneRequired("domain", "rehydrate")
 	configureCmd.MarkFlagsMutuallyExclusive("domain", "rehydrate")
 
 	// New config flag group
-	configureCmd.MarkFlagsRequiredTogether("domain", "billing-account", "group-owner")
+	configureCmd.MarkFlagsRequiredTogether(
+		"domain",
+		"billing-account",
+		"group-owner",
+	)
 
 	// Internal environment flag group
 	configureCmd.MarkFlagsRequiredTogether("internal", "org-admin-sa")

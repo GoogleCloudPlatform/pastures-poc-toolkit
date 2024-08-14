@@ -28,7 +28,8 @@ import (
 	"google.golang.org/api/iterator"
 )
 
-func GetOrganization(domain string) (*Organization, error) { // TODO: move this to a method for an org struct
+// TODO: move this to a method for an org struct
+func GetOrganization(domain string) (*Organization, error) {
 	fmt.Println("\nGetting organization details...")
 	ctx := context.Background()
 

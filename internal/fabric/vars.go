@@ -52,7 +52,11 @@ func (v *VarsFile) AddConfig(config ConfigValues) {
 }
 
 func (v *VarsFile) UploadFile() error {
-	if err := google.UploadObject(v.Bucket, v.RemotePath, v.LocalPath); err != nil {
+	if err := google.UploadObject(
+		v.Bucket,
+		v.RemotePath,
+		v.LocalPath,
+	); err != nil {
 		return err
 	}
 
@@ -60,7 +64,11 @@ func (v *VarsFile) UploadFile() error {
 }
 
 func (v *VarsFile) DownloadFile() error {
-	if err := google.DownloadObject(v.Bucket, v.LocalPath, v.RemotePath); err != nil { // TODO
+	if err := google.DownloadObject(
+		v.Bucket,
+		v.LocalPath,
+		v.RemotePath,
+	); err != nil {
 		return err
 	}
 
@@ -75,10 +83,20 @@ func (v *VarsFile) GetFileMetadata() error {
 	return nil
 }
 
-func resmanDependencies(name string, stage string, prefix string, configPath string) *VarsFile {
+func resmanDependencies(
+	name string,
+	stage string,
+	prefix string,
+	configPath string,
+) *VarsFile {
 	vars := &VarsFile{
-		Name:       name,
-		LocalPath:  filepath.Join(configPath, foundationDir, stage, name+varSuffix),
+		Name: name,
+		LocalPath: filepath.Join(
+			configPath,
+			foundationDir,
+			stage,
+			name+varSuffix,
+		),
 		RemotePath: varDirName + "/" + name + varSuffix,
 		Bucket:     bktName(prefix),
 	}
