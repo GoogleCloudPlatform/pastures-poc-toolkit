@@ -47,7 +47,12 @@ func TfInit(dir string, m bool, verbose bool) error {
 	return err
 }
 
-func TfPlan(dir string, varFiles []string, vars []Vars, verbose bool) PlanResult {
+func TfPlan(
+	dir string,
+	varFiles []string,
+	vars []Vars,
+	verbose bool,
+) PlanResult {
 	var tfPlanOptions []tfexec.PlanOption
 	var result PlanResult
 
@@ -76,7 +81,12 @@ func TfPlan(dir string, varFiles []string, vars []Vars, verbose bool) PlanResult
 
 	defer os.RemoveAll(tmpDir)
 
-	planPath := fmt.Sprintf("%s/%s-%v", tmpDir, "pastureplan", time.Now().Unix())
+	planPath := fmt.Sprintf(
+		"%s/%s-%v",
+		tmpDir,
+		"pastureplan",
+		time.Now().Unix(),
+	)
 
 	// Set the plan out target
 	tfPlanOptions = append(tfPlanOptions, tfexec.Out(planPath))
@@ -110,7 +120,13 @@ func TfPlan(dir string, varFiles []string, vars []Vars, verbose bool) PlanResult
 	return result
 }
 
-func TfApply(dir string, varFiles []string, vars []*Vars, targets []string, verbose bool) error {
+func TfApply(
+	dir string,
+	varFiles []string,
+	vars []*Vars,
+	targets []string,
+	verbose bool,
+) error {
 	var tfApplyOptions []tfexec.ApplyOption
 
 	// find the binary and setup the client
@@ -146,7 +162,13 @@ func TfApply(dir string, varFiles []string, vars []*Vars, targets []string, verb
 	return nil
 }
 
-func TfDestroy(dir string, varFiles []string, vars []*Vars, targets []string, verbose bool) error {
+func TfDestroy(
+	dir string,
+	varFiles []string,
+	vars []*Vars,
+	targets []string,
+	verbose bool,
+) error {
 	var tfDestroyOptions []tfexec.DestroyOption
 
 	// find the binary and setup the client

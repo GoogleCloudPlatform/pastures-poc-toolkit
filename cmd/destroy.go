@@ -26,30 +26,34 @@ import (
 var destroyCmd = &cobra.Command{
 	Use:   "destroy SEED",
 	Short: "Removes the POC resources created by a seed.",
-	Long: `Removes the POC resources created by a seed in a previous
-run of the plant command. Example:
-
-	pasture destroy data-cloud --jumpstart data-warehouse
-	
-A list of seed templates is shown by running:
-	
-	pasture destroy --help`,
+	Long: "Removes the POC resources created by a seed in a previous run " +
+		"of the create command.\n\nExample:\n\n\t" +
+		"pasture destroy data-cloud --jumpstart data-warehouse\n\t\n" +
+		"A list of seed templates is shown by running:\n\t\n\t" +
+		"pasture destroy --help",
 	Args: cobra.ExactArgs(1),
-	// Run: func(cmd *cobra.Command, args []string) {
-	// 	// always print the help command if invoked without subcommand
-	// 	cmd.Help()
-	// 	os.Exit(0)
-	// },
 }
 
 func init() {
 	RootCmd.AddCommand(destroyCmd)
 
 	// Define persistent flags for all seeds
-	destroyCmd.PersistentFlags().Bool("skip-foundation", false, "Prevents the Fabric FAST landing zone deployment")
-	destroyCmd.PersistentFlags().Bool("dry-run", false, "Displays the desired state of the POC")
-	destroyCmd.PersistentFlags().Bool("local-only", false, "Skip migrating state and vars to remote backend")
-	destroyCmd.PersistentFlags().BoolP("internal", "G", false, "Internal use only")
+	destroyCmd.PersistentFlags().
+		Bool(
+			"skip-foundation", false,
+			"Prevents the Fabric FAST landing zone deployment",
+		)
+	destroyCmd.PersistentFlags().
+		Bool(
+			"dry-run", false, "Displays the desired state of the POC",
+		)
+	destroyCmd.PersistentFlags().
+		Bool(
+			"local-only", false,
+			"Skip migrating state and vars to remote backend",
+		)
+	destroyCmd.PersistentFlags().
+		BoolP("internal", "G", false, "Internal use only")
 
 	// Hide these flags
 	if err := destroyCmd.PersistentFlags().MarkHidden("skip-foundation"); err != nil {

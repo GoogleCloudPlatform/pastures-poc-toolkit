@@ -58,14 +58,16 @@ func (f *FastConfig) SetUser(e string) {
 	f.BootstrapUser = e
 }
 
-func (f *FastConfig) SetFeatures(sandbox bool) { // TODO: move this default somewhere else
+// TODO: move sandbox default somewhere else
+func (f *FastConfig) SetFeatures(sandbox bool) {
 	var a FastFeatures
 
 	a.Sandbox = sandbox
 	f.FastFeatures = &a
 }
 
-func (f *FastConfig) SetLocations(l string) { // TODO: update to support various field types in struct
+// TODO: update to support various field types in struct
+func (f *FastConfig) SetLocations(l string) {
 	var loc Locations
 
 	// TODO: this should be field targeted with reflectino loop
@@ -104,7 +106,8 @@ func (f *FastConfig) SetLogSinks(prefix string, sinks LogSinks) {
 	f.LogSinks = updatedLogSinks
 }
 
-func (f *FastConfig) SetGroups(g string) { // TODO: update to support various field types in struct
+// TODO: update to support various field types in struct
+func (f *FastConfig) SetGroups(g string) {
 	var grp Groups
 
 	// TODO: check if group exists first
@@ -120,7 +123,8 @@ func (f *FastConfig) SetGroups(g string) { // TODO: update to support various fi
 	f.Groups = &grp
 }
 
-func (f *FastConfig) AddIamBinding(k string, v []string) error { // TODO: the input paramter should be typed to IamPolicy
+// TODO: the input paramter should be typed to IamPolicy
+func (f *FastConfig) AddIamBinding(k string, v []string) error {
 	m := make(map[string][]string) // Need to initialize
 
 	if _, kExists := f.Iam[k]; kExists {

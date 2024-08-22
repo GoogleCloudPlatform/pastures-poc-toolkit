@@ -33,13 +33,10 @@ var (
 var RootCmd = &cobra.Command{
 	Use:   "pasture",
 	Short: "A POC toolkit for Google Cloud",
-	Long: `Pasture is a CLI toolkit that will create POC
-	landing zones in your Google Cloud organization. It relies
-	on the Cloud Foundation Fabric framework to establish a GCP
-	foundation, and will deploy each 'pasture' as a Sandbox project.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+	Long: "Pastures is a CLI toolkit that will create POC " +
+		"landing zones in your Google Cloud organization. It relies " +
+		"on the Cloud Foundation Fabric framework to establish a GCP " +
+		"foundation, and it will deploy each 'pasture' as a Sandbox project.",
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -61,8 +58,15 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.pastures.yaml)")
-	RootCmd.PersistentFlags().BoolVar(&verbose, "verbose", false, "controls Terraform output verbosity")
+	RootCmd.PersistentFlags().
+		StringVar(
+			&cfgFile, "config", "",
+			"config file (default is $HOME/.pastures.yaml)",
+		)
+	RootCmd.PersistentFlags().
+		BoolVar(
+			&verbose, "verbose", false, "controls Terraform output verbosity",
+		)
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.

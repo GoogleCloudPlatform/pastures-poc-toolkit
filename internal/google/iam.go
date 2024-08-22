@@ -25,7 +25,8 @@ import (
 	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 )
 
-func SetRequiredOrgIAMRoles(org *Organization, g string, r []string) error { // TODO: update to include any kind of principal
+// TODO: update to include any kind of principal
+func SetRequiredOrgIAMRoles(org *Organization, g string, r []string) error {
 	ctx := context.Background()
 	c, err := resourcemanager.NewOrganizationsClient(ctx)
 
@@ -46,23 +47,31 @@ func SetRequiredOrgIAMRoles(org *Organization, g string, r []string) error { // 
 		return err
 	}
 
-	// Merge the new roles with the existing ones TODO: rather than merge, is there a 'member' operation that is gracefully additive?
+	// Merge the new roles with the existing ones
+	// TODO: rather than merge, is there a 'member' operation
+	// that is gracefully additive?
 	for _, role := range r {
 		found := false
 		for _, binding := range currentPolicy.Bindings {
 			if binding.Role == role {
 				// If the role already exists, append the new member
-				binding.Members = append(binding.Members, fmt.Sprintf("group:%s", group))
+				binding.Members = append(
+					binding.Members,
+					fmt.Sprintf("group:%s", group),
+				)
 				found = true
 				break
 			}
 		}
 		if !found {
 			// If the role doesn't exist, create a new binding
-			currentPolicy.Bindings = append(currentPolicy.Bindings, &iampb.Binding{
-				Role:    role,
-				Members: []string{fmt.Sprintf("group:%s", group)},
-			})
+			currentPolicy.Bindings = append(
+				currentPolicy.Bindings,
+				&iampb.Binding{
+					Role:    role,
+					Members: []string{fmt.Sprintf("group:%s", group)},
+				},
+			)
 		}
 	}
 

@@ -39,7 +39,11 @@ func DownloadObject(bucketName string, savePath string, object string) error {
 
 	r, err := obj.NewReader(ctx)
 	if err != nil {
-		return fmt.Errorf("failed to create reader for object %s: %w", object, err)
+		return fmt.Errorf(
+			"failed to create reader for object %s: %w",
+			object,
+			err,
+		)
 	}
 	defer r.Close()
 
@@ -50,7 +54,11 @@ func DownloadObject(bucketName string, savePath string, object string) error {
 
 	if _, err := os.Stat(savePath); err == nil {
 		if err := os.Remove(savePath); err != nil {
-			return fmt.Errorf("failed to remove existing file %s: %w", savePath, err)
+			return fmt.Errorf(
+				"failed to remove existing file %s: %w",
+				savePath,
+				err,
+			)
 		}
 	}
 
@@ -61,13 +69,22 @@ func DownloadObject(bucketName string, savePath string, object string) error {
 	defer createdFile.Close()
 
 	if _, err := io.Copy(createdFile, r); err != nil {
-		return fmt.Errorf("failed to copy object %s to file %s: %w", object, savePath, err)
+		return fmt.Errorf(
+			"failed to copy object %s to file %s: %w",
+			object,
+			savePath,
+			err,
+		)
 	}
 
 	return nil
 }
 
-func UploadObject(bucketName string, objectPath string, localPath string) error {
+func UploadObject(
+	bucketName string,
+	objectPath string,
+	localPath string,
+) error {
 	ctx := context.Background()
 
 	client, err := storage.NewClient(ctx)
@@ -99,7 +116,10 @@ func UploadObject(bucketName string, objectPath string, localPath string) error 
 	return nil
 }
 
-func GetObjectAttributes(bucketName string, objectPath string) (*storage.ObjectAttrs, error) {
+func GetObjectAttributes(
+	bucketName string,
+	objectPath string,
+) (*storage.ObjectAttrs, error) {
 	ctx := context.Background()
 
 	client, err := storage.NewClient(ctx)

@@ -33,18 +33,17 @@ var (
 // Set up pointers to support multiple distinct parents
 var (
 	FoundationCreate  = *FoundationCmd
-	FoundationDestroy = *FoundationCmd
+	FoundationDestroy = *FoundationCmd //TODO no destroy equivalent for foundation
 )
 
 // FoundationCmd represents the foundation command
 var FoundationCmd = &cobra.Command{
 	Use:   "foundation",
 	Short: "Deploy a foundation-only pasture with no blueprints",
-	Long: `Creates a foundation landing zone from the FAST framework.
-Projects can optionally be deployed as features into the landing zone. An
-example of how to use this pasture:
-	
-	pasture create foundation`,
+	Long: "Creates a foundation landing zone from the FAST framework.\n" +
+		"Projects can optionally be deployed as features into the landing zone. " +
+		"An example of how to use this pasture:\n\n\t" +
+		"pasture create foundation",
 	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Construct path for the config
@@ -68,15 +67,20 @@ example of how to use this pasture:
 		varData := fabric.NewFastConfig()
 
 		if err := varData.ReadConfig(varFile.LocalPath); err != nil {
-			fmt.Println("Unable to read var file. Try running pasture configure --rehydrate")
+			fmt.Println(
+				"Unable to read var file.",
+				"Try running pasture configure --rehydrate",
+			)
 			cobra.CheckErr(err)
 		}
 
 		varFile.AddConfig(varData)
-		varFile.SetBucket(varData.Prefix) // TODO: this can be optimized by splitting deps and stage vars
+		varFile.SetBucket(
+			varData.Prefix,
+		) // TODO: this can be optimized by splitting deps and stage vars
 
 		// Load foundation stages
-		stages := fabric.InitializeStages(p, varData.Prefix, varFile)
+		stages := fabric.InitializeFoundationStages(p, varData.Prefix, varFile)
 
 		// Do things with the stages
 		for _, s := range stages {
@@ -90,7 +94,9 @@ example of how to use this pasture:
 
 			// dry run bootstrap stage
 			if dryRun && s.Name == "0-bootstrap" {
-				fmt.Println("Testing if foundation can be applied to GCP organization")
+				fmt.Println(
+					"Testing if foundation can be applied to GCP organization",
+				)
 
 				if err := s.Init(verbose); err != nil {
 					fmt.Println("Cannot initialize stage for dry run")
@@ -98,7 +104,9 @@ example of how to use this pasture:
 				}
 
 				if err := s.Plan(verbose); err != nil {
-					fmt.Println("Foundation cannot be applied to GCP organization")
+					fmt.Println(
+						"Foundation cannot be applied to GCP organization",
+					)
 					cobra.CheckErr(err)
 				}
 
@@ -115,7 +123,9 @@ example of how to use this pasture:
 
 			// try fetching dependency files
 			if err := s.DiscoverFiles(); err != nil {
-				fmt.Println("Pastures first run detected - running with local state")
+				fmt.Println(
+					"Pastures first run detected - running with local state",
+				)
 				firstRun = true
 			}
 
@@ -161,7 +171,10 @@ example of how to use this pasture:
 				if firstRun {
 					// try fetching dependency files
 					if err := s.DiscoverFiles(); err != nil {
-						fmt.Println("Unable to retrieve stage dependencies for:", s.Name)
+						fmt.Println(
+							"Unable to retrieve stage dependencies for:",
+							s.Name,
+						)
 						cobra.CheckErr(err)
 					}
 
@@ -176,7 +189,10 @@ example of how to use this pasture:
 			fmt.Println("Stage complete:", s.Name)
 		}
 
-		fmt.Println("Navigate to the Google Cloud Console to deploy your first workload:", "https://console.cloud.google.com/welcome")
+		fmt.Println(
+			"Navigate to the Google Cloud Console to deploy your first workload:",
+			"https://console.cloud.google.com/welcome",
+		)
 	},
 }
 

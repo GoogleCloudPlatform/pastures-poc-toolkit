@@ -19,8 +19,8 @@ package main
 import (
 	"log"
 
-	"github.com/spf13/cobra/doc"
 	"github.com/GoogleCloudPlatform/pastures-poc-toolkit/cmd"
+	"github.com/spf13/cobra/doc"
 )
 
 func main() {

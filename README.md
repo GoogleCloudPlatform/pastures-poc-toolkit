@@ -8,62 +8,55 @@ The Pastures Proof of Concept (PoC) utility is used to bootstrap greenfield, pro
 
 [![Open in Cloud Shell](https://gstatic.com/cloudssh/images/open-btn.svg)](https://shell.cloud.google.com/cloudshell/editor?cloudshell_git_repo=http://github.com/GoogleCloudPlatform/pastures-poc-toolkit.git)
 
-## Prerequisites
-1. [Google Cloud Organization](https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy#organizations)
-2. [Google Cloud Billing Account](https://cloud.google.com/billing/docs/how-to/manage-billing-account)
-3. [Cloud Identity Group](https://support.google.com/cloudidentity/answer/9400082)
-4. The following IAM permissions:
-    - Billing Account Administrator (`roles/billing.admin`) either on the organization or the billing account (see the following section for details)
-    - Logging Admin (`roles/logging.admin`)
-    - Organization Role Administrator (`roles/iam.organizationRoleAdmin`)
-    - Organization Administrator (`roles/resourcemanager.organizationAdmin`)
-    - Project Creator (`roles/resourcemanager.projectCreator`)
-    - Tag Admin (`roles/resourcemanager.tagAdmin`)
-    - Owner (`roles/owner`)
+## 1. Setup Prerequisites
 
-The following bash script can be used to quickly assign these permissions to your account:
+### Google Cloud
+1. Create your [Google Cloud Organization](https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy#organizations)
+2. Turn on your [Google Cloud Billing Account](https://cloud.google.com/billing/docs/how-to/manage-billing-account)
+3. Create a free [Cloud Identity](https://support.google.com/cloudidentity/answer/7389973) user e.g. `myadmin@example.com` within that Google Cloud organization who has the [Organization Policy Administrator](https://cloud.google.com/iam/docs/understanding-roles#orgpolicy.policyAdmin) IAM role.
+4. Create a [Cloud Identity Group](https://support.google.com/cloudidentity/answer/9400082) e.g. `pastures-group` where your user e.g. `myadmin@example.com` is a member of that group.
 
-> [!NOTE]
-> These prerequisite roles are automatically assigned to the pasture group you supply as a flag to the `configure` subcommand
+### Command Line
+Pastures requires the following command line utilities:
+- [Terraform <sup>1</sup>](https://developer.hashicorp.com/terraform/install)
+- [gcloud SDK](https://cloud.google.com/sdk/docs/install)
+
+<hr>
+
+> [!IMPORTANT]
+ <sup>1</sup> Cloud Shell installs `terraform` and `gcloud` binaries by default, but the `terraform` binary defaults to an older version that won't work with Pastures. You may quickly override the default `terraform` binary by copying and pasting these shell commands in your Cloud Shell:
+
+Run the following in your terminal to fix Cloud Shell.
 
 ```shell
-# set variable for current logged in user
-export PASTURE_USER=$(gcloud config list --format 'value(core.account)')
-
-# find and set your org id
-gcloud organizations list
-export ORG_ID=123456
-
-# set needed roles
-export PASTURE_ROLES="roles/billing.admin roles/logging.admin \
-  roles/iam.organizationRoleAdmin roles/resourcemanager.projectCreator \
-  roles/resourcemanager.organizationAdmin roles/resourcemanager.tagAdmin \
-  roles/owner"
-
-for role in $PASTURE_ROLES; do
-  gcloud organizations add-iam-policy-binding $ORG_ID \
-    --member user:$PASTURE_USER --role $role --condition None
-done
+cd ~
+curl -O https://releases.hashicorp.com/terraform/1.9.4/terraform_1.9.4_linux_amd64.zip
+unzip -o terraform_1.9.4_linux_amd64.zip
+sudo mv terraform /usr/bin
 ```
 
-We recommend running `pasture` from a Cloud Shell environment. If you choose to run from your local machine, the following packages are also required:
-1. [Terraform](https://developer.hashicorp.com/terraform/install)
-2. [gcloud SDK](https://cloud.google.com/sdk/docs/install)
+## 2. Install Pastures CLI
 
-## Install
+Install the binary to your `$PATH` of choice. `amd64` is currently the only supported build architecture. That means that you can run Pastures on Cloud Shell, Linux, and the Windows Subsystem for Linux. macOS universal binary support is available in the [Makefile](Makefile).
 
-Install the binary to your `$PATH` of choice. `amd64` is currently the only supported build architecture.
+Run the following in your terminal to install Pastures.
 <!-- x-release-please-start-version -->
 ```shell
-sudo wget https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/releases/download/v1.1.3/pastures_amd64.tar.gz -O - \
-| sudo tar -zxf - -C /usr/local/bin
-
+BASE_URL=https://github.com/GoogleCloudPlatform/pastures-poc-toolkit
+RELEASE_URL=releases/download/v1.1.3/pastures_amd64.tar.gz
+sudo wget -q $BASE_URL/$RELEASE_URL -O - | sudo tar -zxf - -C /usr/local/bin
 sudo chmod +x /usr/local/bin/pasture
+echo -e "\n\033[32mYou are now ready to use Pastures..."
+echo -e "`pasture version`\n\033[0m\n"
 ```
 <!-- x-release-please-end -->
-## Quickstart
+
+## 3. Execute Data Cloud Quickstart
 
 We recommend running this quickstart from a Cloud Shell environment.
+
+> [!IMPORTANT]
+Ensure that the user running the CLI e.g. `myadmin@example.com` is a member of your Cloud Identity group e.g. `pasture-group`.
 
 1. Configure your local Pastures environment by:
     - Defining a prefix for resource naming
@@ -71,25 +64,32 @@ We recommend running this quickstart from a Cloud Shell environment.
     - Specifying your GCP Organization domain
     - Specifying your GCP Billing Account
 
-> [!IMPORTANT]
-> Ensure that the user running the CLI is a member of your Cloud Identity group e.g. `pasture-group`.
-
 ```shell
-pasture configure --prefix example1 --group-owner pasture-group --domain example.com --billing-account ABCDEF-GHIJKL-MNOPQ
+pasture configure \
+--prefix example1 \
+--group-owner pasture-group \
+--domain example.com \
+--billing-account ABCDEF-GHIJKL-MNOPQ
 ```
 
 2. Create a pasture by indicating which seed template you'd like to deploy (could take ~15 mins to complete):
 
 ```shell
-pasture create data-cloud --region us-central1 --pasture-size small
+pasture create data-cloud \
+--region us-central1 \
+--pasture-size small
 ```
 
-## Cleanup
+## 4. Cleanup
 
 Destruction of a pasture is scoped to the seed template. All resources deployed by `pasture` or out of band will be deleted. Currently, `pasture destroy` requires the same paramters inputs that were used with the corresponding `pasture create`:
 
+<!-- TODO Do we need --pasture-size during destroy? Won't region be enough? Isn't one seed deployable per region? -->
+
 ```shell
-pasture destroy data-cloud --region us-central1 --pasture-size small
+pasture destroy data-cloud \
+--region us-central1 \
+--pasture-size small
 ```
 
 ## Known Issues
@@ -101,7 +101,9 @@ See [Known Issues](docs/known_issues.md).
 Pastures will make every effort to persist environmental state and variable values to a GCS bucket. This supports the ability to run `pasture` from multiple locations, but demands a rehydration step in order to position the dependencies. Rehydration simply requires authorization with Google and the `prefix` originally chosen:
 
 ```shell
-pasture configure --rehydrate --prefix example1
+pasture configure \
+--rehydrate \
+--prefix example1
 ```
 
 Afterwards, you can continue running `pasture` as your normally would.

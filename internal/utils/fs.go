@@ -55,7 +55,8 @@ func CreateFile(p string, d []byte, o bool) error {
 		}
 	}
 
-	if err := os.WriteFile(p, d, 0644); err != nil { // TODO: don't assume 0644 perms
+	// TODO: don't assume 0644 perms
+	if err := os.WriteFile(p, d, 0644); err != nil {
 		return err
 	}
 
@@ -107,7 +108,8 @@ func CreateSymlink(symlinks ...*Symlink) error {
 	return nil
 }
 
-func FileExists(p string) error { // TODO: This should be used in all above functions for test if exists
+// TODO: This should be used in all above functions for test if exists
+func FileExists(p string) error {
 	if _, err := os.Stat(p); !os.IsNotExist(err) {
 		return err
 	}
