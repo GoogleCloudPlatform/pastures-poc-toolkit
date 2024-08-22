@@ -43,7 +43,7 @@ Run the following in your terminal to install Pastures.
 <!-- x-release-please-start-version -->
 ```shell
 BASE_URL=https://github.com/GoogleCloudPlatform/pastures-poc-toolkit
-RELEASE_URL=releases/download/v1.1.3/pastures_amd64.tar.gz
+RELEASE_URL=releases/download/v1.1.4/pastures_amd64.tar.gz
 sudo wget -q $BASE_URL/$RELEASE_URL -O - | sudo tar -zxf - -C /usr/local/bin
 sudo chmod +x /usr/local/bin/pasture
 echo -e "\n\033[32mYou are now ready to use Pastures..."

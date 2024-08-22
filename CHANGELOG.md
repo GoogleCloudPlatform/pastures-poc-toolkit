@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.4](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/compare/v1.1.3...v1.1.4) (2024-08-22)
+
+
+### Bug Fixes
+
+* Revert `large` pasture slot count ([#44](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/issues/44)) ([e485f07](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/commit/e485f073afe52c9e55a8cd9d911cec558a7c71ff))
+
 ## [1.1.3](https://github.com/GoogleCloudPlatform/pastures-poc-toolkit/compare/v1.1.2...v1.1.3) (2024-08-07)
 
 
