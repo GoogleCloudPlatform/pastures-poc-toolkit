@@ -13,7 +13,7 @@ The Pastures Proof of Concept (PoC) utility is used to bootstrap greenfield, pro
 ### Google Cloud
 1. Create your [Google Cloud Organization](https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy#organizations)
 2. Turn on your [Google Cloud Billing Account](https://cloud.google.com/billing/docs/how-to/manage-billing-account)
-3. Create a free [Cloud Identity](https://support.google.com/cloudidentity/answer/7389973) user e.g. `myadmin@example.com` within that Google Cloud organization who has the [Organization Policy Administrator](https://cloud.google.com/iam/docs/understanding-roles#orgpolicy.policyAdmin) IAM role.
+3. Create a free [Cloud Identity](https://support.google.com/cloudidentity/answer/7389973) user e.g. `myadmin@example.com` within that Google Cloud organization who has the [Organization Administrator](https://cloud.google.com/iam/docs/understanding-roles#resourcemanager.organizationAdmin) IAM role.
 4. Create a [Cloud Identity Group](https://support.google.com/cloudidentity/answer/9400082) e.g. `pastures-group` where your user e.g. `myadmin@example.com` is a member of that group.
 
 ### Command Line
