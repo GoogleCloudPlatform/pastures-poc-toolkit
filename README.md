@@ -32,7 +32,7 @@ Run the following in your terminal to fix Cloud Shell.
 cd ~
 curl -O https://releases.hashicorp.com/terraform/1.9.4/terraform_1.9.4_linux_amd64.zip
 unzip -o terraform_1.9.4_linux_amd64.zip
-sudo mv terraform /usr/bin
+sudo mv ./terraform /usr/bin
 ```
 
 ## 2. Install Pastures CLI
