@@ -43,7 +43,7 @@ Run the following in your terminal to install Pastures.
 <!-- x-release-please-start-version -->
 ```shell
 BASE_URL=https://github.com/GoogleCloudPlatform/pastures-poc-toolkit
-RELEASE_URL=releases/download/v1.1.4/pastures_amd64.tar.gz
+RELEASE_URL=releases/download/v1.1.3/pastures_amd64.tar.gz
 sudo wget -q $BASE_URL/$RELEASE_URL -O - | sudo tar -zxf - -C /usr/local/bin
 sudo chmod +x /usr/local/bin/pasture
 echo -e "\n\033[32mYou are now ready to use Pastures..."
@@ -112,7 +112,7 @@ Afterwards, you can continue running `pasture` as your normally would.
 
 | Name | Description | Docs | Est. Price Calculator |
 | ---- | ----------- | ---- | --------------------- |
-| `data-cloud` | Landing zone for data, analytics and generative AI | [cmd](docs/pasture_create_data-cloud.md) | [Small](https://cloud.google.com/products/calculator-legacy#id=5c5c2811-605e-4bdd-94f6-d1c9a19defd5)<br>[Big](https://cloud.google.com/products/calculator-legacy#id=ab352e16-69de-4726-8e91-f1fe0475c3dc) |
+| `data-cloud` | Landing zone for data, analytics and generative AI | [cmd](docs/pasture_create_data-cloud.md) | [Small](https://cloud.google.com/products/calculator-legacy#id=5c5c2811-605e-4bdd-94f6-d1c9a19defd5)<br>[Large](https://cloud.google.com/products/calculator-legacy#id=ab352e16-69de-4726-8e91-f1fe0475c3dc) |
 | `foundation` | Generic landing zone from Fabric FAST foundation stage 0 and stage 1 | [cmd](docs/pasture_create_foundation.md) | N/A |
 
 ## Blueprints
