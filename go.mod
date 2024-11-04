@@ -7,7 +7,7 @@ require (
 	cloud.google.com/go/resourcemanager v1.9.5
 	cloud.google.com/go/storage v1.39.0
 	github.com/go-git/go-git/v5 v5.12.0
-	github.com/golang-jwt/jwt/v4 v4.5.0
+	github.com/golang-jwt/jwt/v4 v4.5.1
 	github.com/hashicorp/terraform-exec v0.20.0
 	github.com/lestrrat-go/jwx v1.2.29
 	github.com/spf13/cobra v1.8.0
