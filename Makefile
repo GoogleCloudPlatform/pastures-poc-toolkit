@@ -17,15 +17,15 @@ all: build clean
 build:
 	echo "Building..."
 	if [ ! -d "dist" ]; then mkdir dist; fi
-	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -tags netgo -ldflags '-extldflags "-static"' -o dist/linux/pasture main.go
+	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -tags netgo -ldflags '-extldflags "-static"' -o dist/linux/fabric main.go
 	@if [ "$$(uname)" = "Darwin" ]; then \
-		GOOS=darwin GOARCH=arm64 go build -o dist/mac/pasture-darwin-arm64 main.go; \
-		GOOS=darwin GOARCH=amd64 go build -o dist/mac/pasture-darwin-amd64 main.go; \
-		lipo -create -output dist/mac/pasture dist/mac/pasture-darwin-amd64 dist/mac/pasture-darwin-arm64; \
+		GOOS=darwin GOARCH=arm64 go build -o dist/mac/fabric-darwin-arm64 main.go; \
+		GOOS=darwin GOARCH=amd64 go build -o dist/mac/fabric-darwin-amd64 main.go; \
+		lipo -create -output dist/mac/fabric dist/mac/fabric-darwin-amd64 dist/mac/fabric-darwin-arm64; \
 	fi
 
 clean:
 	echo "Cleaning up..."
 	@if [ "$$(uname)" = "Darwin" ]; then \
-		rm -f ./dist/mac/pastures-darwin-amd64 ./dist/mac/pastures-darwin-arm64; \
+		rm -f ./dist/mac/fabric-darwin-amd64 ./dist/mac/fabric-darwin-arm64; \
 	fi

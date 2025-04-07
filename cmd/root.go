@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,18 +23,25 @@ import (
 	"github.com/spf13/viper"
 )
 
-var cfgFile string
+var (
+	cfgFile string
+	verbose bool
+)
 
-// rootCmd represents the base command when called without any subcommands
-var rootCmd = &cobra.Command{
-	Use:   "pastures-poc-toolkit",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+// RootCmd represents the base command when called without any subcommands
+var RootCmd = &cobra.Command{
+	Use:   "fabric",
+	Short: "A POC toolkit for Google Cloud",
+	Long: `Fabric is an accelerator utility to deliver POC landing zones
+within a Google Cloud Secure Organization. Each POC lanading zone is
+treated as a separate sandbox.
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+Your secure organization is a shared resource that can be promoted to
+production upon POC completion. This utility accelerates realizing
+POC value, all from a best-practices secure organization.
+
+For more information on the Cloud Foundation Fabric FAST framework, please
+visit https://github.com/GoogleCloudPlatform/cloud-foundation-fabric/tree/master/fast`, // TODO: update this description to something more meaningful
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
@@ -43,7 +50,7 @@ to quickly create a Cobra application.`,
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
-	err := rootCmd.Execute()
+	err := RootCmd.Execute()
 	if err != nil {
 		os.Exit(1)
 	}
@@ -52,15 +59,21 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
+	// Lets hide the pesky completion flag
+	RootCmd.CompletionOptions.HiddenDefaultCmd = true
+
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.pastures-poc-toolkit.yaml)")
+	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.fabric.yaml)")
+
+	// Control terraform verbosity
+	RootCmd.PersistentFlags().BoolVar(&verbose, "verbose", false, "controls Terraform output verbosity")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	RootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -76,7 +89,7 @@ func initConfig() {
 		// Search config in home directory with name ".pastures-poc-toolkit" (without extension).
 		viper.AddConfigPath(home)
 		viper.SetConfigType("yaml")
-		viper.SetConfigName(".pastures-poc-toolkit")
+		viper.SetConfigName(".fabric")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
