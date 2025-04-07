@@ -30,8 +30,9 @@ var (
 
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
-	Use:   "fabric",
-	Short: "A POC toolkit for Google Cloud",
+	Use:     "fabric",
+	Version: "v1.0.0", // x-release-please-version
+	Short:   "A POC toolkit for Google Cloud",
 	Long: `Fabric is an accelerator utility to deliver POC landing zones
 within a Google Cloud Secure Organization. Each POC lanading zone is
 treated as a separate sandbox.
